@@ -14,10 +14,12 @@ public class Server {
 
             // Esperar a que un cliente se conecte
             System.out.println("Esperando a un cliente...");
-            clientSocket = serverSocket.accept();
-            System.out.println("Cliente conectado: " + clientSocket);
+
 
             while(true){
+
+                clientSocket = serverSocket.accept();
+                System.out.println("Cliente conectado: " + clientSocket);
 
                 // Crear el flujo de salida al cliente
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -33,24 +35,13 @@ public class Server {
                     // Enviar una respuesta al cliente
                     out.println("Respuesta desde el servidor: " + inputLine);
 
-                    if (inputLine.equals("Bye.")) {
-                        break;
-                    }
                 }
+
+                clientSocket.close();
             }
 
         } catch (IOException e) {
             System.out.println("Error en la conexión: " + e.getMessage());
-        } finally {
-            try {
-                // Cerrar los flujos y los sockets
-                out.close();
-                in.close();
-                clientSocket.close();
-                serverSocket.close();
-            } catch (IOException e) {
-                System.out.println("Error al cerrar los flujos y los sockets: " + e.getMessage());
-            }
         }
     }
 }
