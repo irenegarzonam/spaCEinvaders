@@ -70,92 +70,123 @@ int main() {
 
 //TODO_ LO DE LA INTERFAZ
 
-// Definir las constantes para la ventana y la imagen
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
-#define IMAGE_WIDTH 64
-#define IMAGE_HEIGHT 64
+// Declaración de variables globales
+HWND g_hwnd;
+HBITMAP g_hBitmap;
+int g_x = 0;
+int g_y = 0;
 
-// Definir la estructura para la imagen
-typedef struct {
-    int x;
-    int y;
-} Image;
+// Declaración de funciones
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-// Función de controlador de eventos para las teclas de flecha
-void handle_arrow_key(Image *image, int keycode) {
-    switch (keycode) {
-        case VK_LEFT:
-            image->x -= 10;
-            break;
-        case VK_RIGHT:
-            image->x += 10;
-            break;
-        case VK_UP:
-            image->y -= 10;
-            break;
-        case VK_DOWN:
-            image->y += 10;
-            break;
-    }
-}
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+    // Definición de variables locales
+    WNDCLASS wc = {0};
+    MSG msg = {0};
+    HWND hwnd;
+    HDC hdc;
+    BITMAP bm;
+    HINSTANCE hinst;
+    HBITMAP hbmp;
+    BITMAPFILEHEADER hdr;
+    BITMAPINFOHEADER bmi;
+    RGBQUAD rgb[256];
+    DWORD dwBytesRead;
+    HANDLE hFile;
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){
-    HWND hwnd = CreateWindow("STATIC", "Image Moving Program",
-                             WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-                             CW_USEDEFAULT, CW_USEDEFAULT, WINDOW_WIDTH, WINDOW_HEIGHT,
-                             NULL, NULL, NULL, NULL);
-
-    WNDCLASS wc = { 0 };
-    wc.lpfnWndProc = DefWindowProc;
+    // Registro de la clase de ventana
+    wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.lpszClassName = "ImageMovingProgram";
+    wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND);
+    wc.lpszClassName = TEXT("MyClass");
     RegisterClass(&wc);
 
-    // Crear la imagen
-    Image image = { WINDOW_WIDTH/2 - IMAGE_WIDTH/2, WINDOW_HEIGHT/2 - IMAGE_HEIGHT/2 };
-    HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, "nave.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-    if (hBitmap == NULL) {
-        MessageBox(NULL, "No se pudo cargar la imagen", "Error", MB_OK | MB_ICONERROR);
-        return 1;
+    // Creación de la ventana
+    hwnd = CreateWindow(TEXT("MyClass"), TEXT("Moving Image"), WS_OVERLAPPEDWINDOW,
+                        CW_USEDEFAULT, CW_USEDEFAULT, 640, 480, NULL, NULL, hInstance, NULL);
+    ShowWindow(hwnd, nCmdShow);
+
+    // Carga de la imagen desde un archivo BMP
+    hFile = CreateFile(TEXT("nave.bmp"), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (g_hBitmap == NULL) {
+        MessageBox(hwnd, "Failed to load image", "Error", MB_OK | MB_ICONERROR);
+        return 0;
     }
+    ReadFile(hFile, &hdr, sizeof(BITMAPFILEHEADER), &dwBytesRead, NULL);
+    ReadFile(hFile, &bmi, sizeof(BITMAPINFOHEADER), &dwBytesRead, NULL);
+    ReadFile(hFile, rgb, sizeof(RGBQUAD) * bmi.biClrUsed, &dwBytesRead, NULL);
+    hbmp = CreateDIBSection(NULL, (BITMAPINFO*)&bmi, DIB_RGB_COLORS, (void**)&hdc, NULL, 0);
+    ReadFile(hFile, hdc, bmi.biSizeImage, &dwBytesRead, NULL);
+    CloseHandle(hFile);
 
-    // Mostrar la imagen en la ventana
-    HDC hdc = GetDC(hwnd);
-    HDC hdcMem = CreateCompatibleDC(hdc);
-    HBITMAP hBitmapOld = SelectObject(hdcMem, hBitmap);
-    BitBlt(hdc, image.x, image.y, IMAGE_WIDTH, IMAGE_HEIGHT, hdcMem, 0, 0, SRCCOPY);
-    SelectObject(hdcMem, hBitmapOld);
-    DeleteDC(hdcMem);
+    // Configuración de variables globales
+    g_hwnd = hwnd;
+    g_hBitmap = hbmp;
 
-    // Iniciar el bucle principal
-    MSG msg;
-    while (GetMessage(&msg, NULL, 0, 0)) {
+    // Bucle principal de mensajes
+    while (GetMessage(&msg, NULL, 0, 0))
+    {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
-
-        // Mover la imagen si se ha presionado una tecla de flecha
-        if (msg.message == WM_KEYDOWN) {
-            handle_arrow_key(&image, msg.wParam);
-
-            // Actualizar la posición de la imagen en la consola
-            printf("Image position: (%d, %d)\n", image.x, image.y);
-
-            // Mostrar la imagen en la nueva posición
-            hdc = GetDC(hwnd);
-            hdcMem = CreateCompatibleDC(hdc);
-            hBitmapOld = SelectObject(hdcMem, hBitmap);
-            BitBlt(hdc, image.x, image.y, IMAGE_WIDTH, IMAGE_HEIGHT, hdcMem, 0, 0, SRCCOPY);
-            SelectObject(hdcMem, hBitmapOld);
-            DeleteDC(hdcMem);
-        }
     }
 
-    // Liberar los recursos
-    DeleteObject(hBitmap);
-    ReleaseDC(hwnd, hdc);
-    DestroyWindow(hwnd);
+    // Liberación de recursos
+    DeleteObject(hbmp);
+
+    return (int)msg.wParam;
+}
+
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+    // Definición de variables locales
+    HDC hdc;
+    PAINTSTRUCT ps;
+    RECT rect;
+    int key;
+
+    switch (msg) {
+        case WM_TIMER:
+        {
+            if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
+                g_x -= 10;
+            }
+            if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
+                g_x += 10;
+            }
+            if (GetAsyncKeyState(VK_UP) & 0x8000) {
+                g_y -= 10;
+            }
+            if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
+                g_y += 10;
+            }
+
+            // Redibujado de la imagen
+            InvalidateRect(hwnd, NULL, TRUE);
+            break;
+        }
+
+            // Redibujado de la imagen
+            InvalidateRect(hwnd, NULL, TRUE);
+            break;
+        case WM_PAINT:
+            // Dibujo de la imagen en la ventana
+            hdc = BeginPaint(hwnd, &ps);
+            SelectObject(hdc, g_hBitmap);
+            GetClientRect(hwnd, &rect);
+            StretchBlt(hdc, g_x, g_y, rect.right, rect.bottom, hdc, 0, 0, rect.right, rect.bottom, SRCCOPY);
+            EndPaint(hwnd, &ps);
+
+            // Impresión de la posición de la imagen en la consola
+            printf("Posición de la imagen: (%d, %d)\n", g_x, g_y);
+            break;
+        case WM_DESTROY:
+            // Detención del temporizador y cierre de la ventana
+            KillTimer(hwnd, 1);
+            PostQuitMessage(0);
+            break;
+        default:
+            return DefWindowProc(hwnd, msg, wParam, lParam);
+    }
 
     return 0;
 }
