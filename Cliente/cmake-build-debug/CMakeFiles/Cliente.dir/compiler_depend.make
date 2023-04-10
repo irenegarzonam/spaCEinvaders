@@ -13,10 +13,19 @@ CMakeFiles/Cliente.dir/Cliente.c.obj: C:/Users/DylanG/Documents/1.UNIVERSIDAD/1.
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/_mingw_off_t.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/swprintf.inl \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/stdio_s.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/stdlib.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/corecrt_wstdlib.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed/limits.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed/syslimits.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/limits.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/crtdefs.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/malloc.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mm_malloc.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/errno.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/windows.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sdkddkver.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/excpt.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/crtdefs.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/stdarg.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/stdarg.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/_mingw_stdarg.h \
@@ -76,15 +85,6 @@ CMakeFiles/Cliente.dir/Cliente.c.obj: C:/Users/DylanG/Documents/1.UNIVERSIDAD/1.
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/immintrin.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mmintrin.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/xmmintrin.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mm_malloc.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/stdlib.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/corecrt_wstdlib.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed/limits.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed/syslimits.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/limits.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/stdlib_s.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/malloc.h \
-  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/errno.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/emmintrin.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/pmmintrin.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/tmmintrin.h \
@@ -256,13 +256,15 @@ CMakeFiles/Cliente.dir/Cliente.c.obj: C:/Users/DylanG/Documents/1.UNIVERSIDAD/1.
   C:/Users/DylanG/Documents/1.UNIVERSIDAD/1.\ Semestres/5to.\ Semestre/1.\ Compi/Tarea\ Paradigma\ Imperativo\ OOP/spaCEinvaders/Cliente/Cliente.h
 
 
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/rtmintrin.h:
-
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sdkddkver.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/corecrt.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/fxsrintrin.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mm3dnow.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed/limits.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/psdk_inc/_socket_types.h:
 
@@ -310,27 +312,53 @@ C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/_
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/stddef.h:
 
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/avx512vbmi2vlintrin.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/stdlib.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/corecrt_wstdlib.h:
+
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/swprintf.inl:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/stdio_s.h:
 
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/gfniintrin.h:
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed/syslimits.h:
 
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/windows.h:
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/vaesintrin.h:
 
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/excpt.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/oaidl.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/datetimeapi.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/pkuintrin.h:
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/limits.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/specstrings.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/cetintrin.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/crtdefs.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/winspool.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/stdlib_s.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/objidl.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/basetsd.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sal.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/malloc.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/psdk_inc/_ip_types.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mm_malloc.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/processenv.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/errno.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/gfniintrin.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/windows.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/excpt.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/dpapi.h:
 
@@ -342,17 +370,9 @@ C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/1
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/windef.h:
 
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/rdseedintrin.h:
-
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/driverspecs.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/winapifamily.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/objidl.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/basetsd.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sal.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/ioapiset.h:
 
@@ -392,10 +412,6 @@ C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/w
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/bmi2intrin.h:
 
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/heapapi.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/tbmintrin.h:
-
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/lzcntintrin.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/cldemoteintrin.h:
@@ -408,19 +424,33 @@ C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/1
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/movdirintrin.h:
 
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/unknwn.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/popcntintrin.h:
-
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mwaitxintrin.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/rpcasync.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/pconfigintrin.h:
 
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/unknwn.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/popcntintrin.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/oaidl.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/datetimeapi.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/pkuintrin.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/rdseedintrin.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/rtmintrin.h:
+
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/serializeintrin.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/sgxintrin.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/heapapi.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/tbmintrin.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/tsxldtrkintrin.h:
 
@@ -455,36 +485,6 @@ C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/u
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/immintrin.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mmintrin.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/psdk_inc/_ip_types.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mm_malloc.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/avx512vbmi2vlintrin.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/corecrt_wstdlib.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/stdlib.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/mm3dnow.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed/limits.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed/syslimits.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/vaesintrin.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/limits.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/winspool.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sec_api/stdlib_s.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/malloc.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/processenv.h:
-
-C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/errno.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/emmintrin.h:
 

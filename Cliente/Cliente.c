@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
-#include "Cliente.h"
-
 #pragma comment(lib, "ws2_32.lib") // enlazar con la librería ws2_32.lib
+
+#include "Cliente.h"
 
 
 //TODO_ LO DE PARTE CLIENTE
@@ -69,131 +70,92 @@ int main() {
 
 //TODO_ LO DE LA INTERFAZ
 
-// Función principal
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    // Registro de la clase de ventana
-    WNDCLASS wc = {0};
-    wc.lpfnWndProc = WindowProc;
+// Definir las constantes para la ventana y la imagen
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 480
+#define IMAGE_WIDTH 64
+#define IMAGE_HEIGHT 64
+
+// Definir la estructura para la imagen
+typedef struct {
+    int x;
+    int y;
+} Image;
+
+// Función de controlador de eventos para las teclas de flecha
+void handle_arrow_key(Image *image, int keycode) {
+    switch (keycode) {
+        case VK_LEFT:
+            image->x -= 10;
+            break;
+        case VK_RIGHT:
+            image->x += 10;
+            break;
+        case VK_UP:
+            image->y -= 10;
+            break;
+        case VK_DOWN:
+            image->y += 10;
+            break;
+    }
+}
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){
+    HWND hwnd = CreateWindow("STATIC", "Image Moving Program",
+                             WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                             CW_USEDEFAULT, CW_USEDEFAULT, WINDOW_WIDTH, WINDOW_HEIGHT,
+                             NULL, NULL, NULL, NULL);
+
+    WNDCLASS wc = { 0 };
+    wc.lpfnWndProc = DefWindowProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = "MyWindowClass";
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.lpszClassName = "ImageMovingProgram";
     RegisterClass(&wc);
 
-    // Creación de la ventana
-    hWindow = CreateWindow("MyWindowClass", "My Window", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 640, 480,
-                           NULL, NULL, hInstance, NULL);
-
-    // Creación del botón
-    hButton = CreateWindow("BUTTON", "Click me", WS_VISIBLE | WS_CHILD, 10, 10, 100, 30, hWindow, NULL, hInstance,
-                           NULL);
-
-    // Creación de la caja de texto
-    hTextbox = CreateWindow("EDIT", "", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_AUTOHSCROLL, 10, 50, 300, 20, hWindow,
-                            NULL, hInstance, NULL);
-
-    // Carga de la imagen
-
-
-    // Mostrar ventana
-    ShowWindow(hWindow, nCmdShow);
-
-    // Bucle principal de mensajes
-    MSG msg = {0};
-    while (GetMessage(&msg, NULL, 0, 0)) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+    // Crear la imagen
+    Image image = { WINDOW_WIDTH/2 - IMAGE_WIDTH/2, WINDOW_HEIGHT/2 - IMAGE_HEIGHT/2 };
+    HBITMAP hBitmap = (HBITMAP)LoadImage(NULL, "nave.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    if (hBitmap == NULL) {
+        MessageBox(NULL, "No se pudo cargar la imagen", "Error", MB_OK | MB_ICONERROR);
+        return 1;
     }
 
-    return 0;
-}
-
-// Procedimiento de ventana
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-    switch (uMsg) {
-        case WM_DESTROY:
-            PostQuitMessage(0);
-            return 0;
-
-        case WM_COMMAND:
-            if (lParam == (LPARAM) hButton) {
-                OnButtonClick();
-            }
-            return 0;
-
-        case WM_PAINT:
-            OnPaint(hwnd);
-            return 0;
-
-        default:
-            return DefWindowProc(hwnd, uMsg, wParam, lParam);
-    }
-}
-
-// Función llamada cuando se presiona el botón
-void OnButtonClick() {
-    char text[256];
-    GetWindowText(hTextbox, text, 256);
-    MessageBox(hWindow, text, "Texto ingresado", MB_OK);
-}
-
-void OnPaint(HWND hwnd) {
-    PAINTSTRUCT ps;
-    HDC hdc = BeginPaint(hwnd, &ps);
-
-    // Dibujar imagen
+    // Mostrar la imagen en la ventana
+    HDC hdc = GetDC(hwnd);
     HDC hdcMem = CreateCompatibleDC(hdc);
-    HBITMAP hBitmapOld = (HBITMAP) SelectObject(hdcMem, hBitmap);
-
-    BITMAP bitmap;
-    GetObject(hBitmap, sizeof(bitmap), &bitmap);
-
-    StretchBlt(hdc, 0, yPos, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, SRCCOPY);
-
+    HBITMAP hBitmapOld = SelectObject(hdcMem, hBitmap);
+    BitBlt(hdc, image.x, image.y, IMAGE_WIDTH, IMAGE_HEIGHT, hdcMem, 0, 0, SRCCOPY);
     SelectObject(hdcMem, hBitmapOld);
     DeleteDC(hdcMem);
 
-    // Mover imagen
-    yPos += 10;
-    if (yPos > ps.rcPaint.bottom) {
-        yPos = -bitmap.bmHeight;
-    }
+    // Iniciar el bucle principal
+    MSG msg;
+    while (GetMessage(&msg, NULL, 0, 0)) {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
 
-    EndPaint(hwnd, &ps);
-}
+        // Mover la imagen si se ha presionado una tecla de flecha
+        if (msg.message == WM_KEYDOWN) {
+            handle_arrow_key(&image, msg.wParam);
 
-HBITMAP LoadImageFromResource(const wchar_t* resourceName) {
-    HBITMAP hBitmap = NULL;
+            // Actualizar la posición de la imagen en la consola
+            printf("Image position: (%d, %d)\n", image.x, image.y);
 
-    // Obtener identificador del módulo
-    HMODULE hModule = GetModuleHandle(NULL);
-
-    // Cargar imagen desde archivo en carpeta raíz del programa
-    HBITMAP hLoadedBitmap = (HBITMAP) LoadImage(hModule, resourceName, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-
-    if (hLoadedBitmap != NULL) {
-        // Crear una copia compatible de la imagen cargada
-        HDC hdcMem = CreateCompatibleDC(NULL);
-        if (hdcMem != NULL) {
-            BITMAP bitmap;
-            GetObject(hLoadedBitmap, sizeof(bitmap), &bitmap);
-
-            hBitmap = CreateCompatibleBitmap(hdcMem, bitmap.bmWidth, bitmap.bmHeight);
-
-            if (hBitmap != NULL) {
-                HBITMAP hBitmapOld = (HBITMAP) SelectObject(hdcMem, hBitmap);
-
-                // Copiar la imagen cargada en la copia compatible
-                BitBlt(hdcMem, 0, 0, bitmap.bmWidth, bitmap.bmHeight, hdcMem, 0, 0, SRCCOPY);
-
-                SelectObject(hdcMem, hBitmapOld);
-            }
-
+            // Mostrar la imagen en la nueva posición
+            hdc = GetDC(hwnd);
+            hdcMem = CreateCompatibleDC(hdc);
+            hBitmapOld = SelectObject(hdcMem, hBitmap);
+            BitBlt(hdc, image.x, image.y, IMAGE_WIDTH, IMAGE_HEIGHT, hdcMem, 0, 0, SRCCOPY);
+            SelectObject(hdcMem, hBitmapOld);
             DeleteDC(hdcMem);
         }
-
-        DeleteObject(hLoadedBitmap);
     }
 
-    return hBitmap;
+    // Liberar los recursos
+    DeleteObject(hBitmap);
+    ReleaseDC(hwnd, hdc);
+    DestroyWindow(hwnd);
+
+    return 0;
 }
-
-
