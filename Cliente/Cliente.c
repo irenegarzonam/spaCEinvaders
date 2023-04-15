@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <windows.h>
 #pragma comment(lib, "ws2_32.lib") // enlazar con la librería ws2_32.lib
 
@@ -81,112 +80,57 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-    // Definición de variables locales
-    WNDCLASS wc = {0};
-    MSG msg = {0};
-    HWND hwnd;
-    HDC hdc;
-    BITMAP bm;
-    HINSTANCE hinst;
-    HBITMAP hbmp;
-    BITMAPFILEHEADER hdr;
-    BITMAPINFOHEADER bmi;
-    RGBQUAD rgb[256];
-    DWORD dwBytesRead;
-    HANDLE hFile;
+    MSG  msg;
+    WNDCLASSW wc = {0};
+    wc.lpszClassName = L"Static image";
+    wc.hInstance     = hInstance;
+    wc.hbrBackground = GetSysColorBrush(COLOR_3DFACE);
+    wc.lpfnWndProc   = WndProc;
+    wc.hCursor       = LoadCursor(0,IDC_ARROW);
 
-    // Registro de la clase de ventana
-    wc.lpfnWndProc = WndProc;
-    wc.hInstance = hInstance;
-    wc.hbrBackground = (HBRUSH)(COLOR_BACKGROUND);
-    wc.lpszClassName = TEXT("MyClass");
-    RegisterClass(&wc);
 
-    // Creación de la ventana
-    hwnd = CreateWindow(TEXT("MyClass"), TEXT("Moving Image"), WS_OVERLAPPEDWINDOW,
-                        CW_USEDEFAULT, CW_USEDEFAULT, 640, 480, NULL, NULL, hInstance, NULL);
-    ShowWindow(hwnd, nCmdShow);
+    RegisterClassW(&wc);
+    CreateWindowW(wc.lpszClassName, L"Static image",
+                  WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                  100, 100, 330, 270, 0, 0, hInstance, 0);
 
-    // Carga de la imagen desde un archivo BMP
-    hFile = CreateFile(TEXT("nave.bmp"), GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-    if (g_hBitmap == NULL) {
-        MessageBox(hwnd, "Failed to load image", "Error", MB_OK | MB_ICONERROR);
-        return 0;
-    }
-    ReadFile(hFile, &hdr, sizeof(BITMAPFILEHEADER), &dwBytesRead, NULL);
-    ReadFile(hFile, &bmi, sizeof(BITMAPINFOHEADER), &dwBytesRead, NULL);
-    ReadFile(hFile, rgb, sizeof(RGBQUAD) * bmi.biClrUsed, &dwBytesRead, NULL);
-    hbmp = CreateDIBSection(NULL, (BITMAPINFO*)&bmi, DIB_RGB_COLORS, (void**)&hdc, NULL, 0);
-    ReadFile(hFile, hdc, bmi.biSizeImage, &dwBytesRead, NULL);
-    CloseHandle(hFile);
+    while (GetMessage(&msg, NULL, 0, 0)) {
 
-    // Configuración de variables globales
-    g_hwnd = hwnd;
-    g_hBitmap = hbmp;
-
-    // Bucle principal de mensajes
-    while (GetMessage(&msg, NULL, 0, 0))
-    {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
 
-    // Liberación de recursos
-    DeleteObject(hbmp);
-
-    return (int)msg.wParam;
+    return (int) msg.wParam;
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    // Definición de variables locales
-    HDC hdc;
-    PAINTSTRUCT ps;
-    RECT rect;
-    int key;
+    HWND hsti;
 
-    switch (msg) {
-        case WM_TIMER:
-        {
-            if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-                g_x -= 10;
-            }
-            if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
-                g_x += 10;
-            }
-            if (GetAsyncKeyState(VK_UP) & 0x8000) {
-                g_y -= 10;
-            }
-            if (GetAsyncKeyState(VK_DOWN) & 0x8000) {
-                g_y += 10;
-            }
+    switch(msg) {
 
-            // Redibujado de la imagen
-            InvalidateRect(hwnd, NULL, TRUE);
+        case WM_CREATE:
+
+            LoadMyImage();
+            hsti = CreateWindowW(L"Static", L"",
+                                 WS_CHILD | WS_VISIBLE | SS_BITMAP,
+                                 5, 5, 300, 300, hwnd, (HMENU) 1, NULL, NULL);
+
+            SendMessage(hsti, STM_SETIMAGE,
+                        (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
             break;
-        }
 
-            // Redibujado de la imagen
-            InvalidateRect(hwnd, NULL, TRUE);
-            break;
-        case WM_PAINT:
-            // Dibujo de la imagen en la ventana
-            hdc = BeginPaint(hwnd, &ps);
-            SelectObject(hdc, g_hBitmap);
-            GetClientRect(hwnd, &rect);
-            StretchBlt(hdc, g_x, g_y, rect.right, rect.bottom, hdc, 0, 0, rect.right, rect.bottom, SRCCOPY);
-            EndPaint(hwnd, &ps);
-
-            // Impresión de la posición de la imagen en la consola
-            printf("Posición de la imagen: (%d, %d)\n", g_x, g_y);
-            break;
         case WM_DESTROY:
-            // Detención del temporizador y cierre de la ventana
-            KillTimer(hwnd, 1);
+
+            DeleteObject(hBitmap);
             PostQuitMessage(0);
             break;
-        default:
-            return DefWindowProc(hwnd, msg, wParam, lParam);
     }
 
-    return 0;
+    return DefWindowProcW(hwnd, msg, wParam, lParam);
+}
+
+void LoadMyImage(void) {
+
+    hBitmap = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\nave.bmp", IMAGE_BITMAP,
+                         0, 0, LR_LOADFROMFILE);
 }
