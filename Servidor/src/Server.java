@@ -3,6 +3,9 @@ import java.io.*;
 
 public class Server {
     public static void main(String[] args) {
+        Game juego = new Game(12,5, 75, 55);
+        juego.update();
+        /*
         ServerSocket serverSocket = null;
         Socket clientSocket = null;
         PrintWriter out = null;
@@ -37,13 +40,14 @@ public class Server {
 
                 }
 
-                in.close();
-                out.close();
                 clientSocket.close();
             }
 
         } catch (IOException e) {
             System.out.println("Error en la conexión: " + e.getMessage());
         }
+
+         */
     }
+
 }
