@@ -11,9 +11,9 @@ int Cliente(int comando);
 
 //Parte Interfaz
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-int WINAPI VentanaJuego(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 void LoadMyImage(void);
 
+//La idea es que esta matriz esté vacía
 int matrix[60][2] = {
         {75,55},{75,135},{75,215},{75,295},{75,375},
         {155,55},{155,135},{155,215},{155,295},{155,375},
