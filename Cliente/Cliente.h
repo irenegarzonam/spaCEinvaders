@@ -12,6 +12,18 @@ int bytes_enviados, bytes_recibidos;
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 void LoadMyImage(void);
 HBITMAP hBitmap;
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+void LoadMyImage(void);
 
+// Variables globales
+HBITMAP hBitmap;
+int matrix[15][2] = {
+        {0,0},{0,100},{0,200},
+        {80,0},{80,100},{80,200},
+        {160,0},{160,100},{160,200},
+        {240,0},{240,100},{240,200},
+        {320,0},{320,100},{320,200},
+};
+HBITMAP hBitmap1, hBitmap2, hBitmap3;
 
 #endif //CLIENTE_CLIENTE_H

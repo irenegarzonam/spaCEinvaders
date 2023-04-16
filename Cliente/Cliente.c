@@ -4,7 +4,6 @@
 
 #include "Cliente.h"
 
-
 //TODO_ LO DE PARTE CLIENTE
 int main() {
 
@@ -48,7 +47,7 @@ int main() {
         return 1;
     }
     respuesta[bytes_recibidos] = '\0';
-    printf("Respuesta recibida del servidor: %s", respuesta);
+    printf("Respuesta recibida del servispace idor: %s", respuesta);
 
     // Cerrar el socket y liberar recursos
     closesocket(sockfd);
@@ -69,12 +68,6 @@ int main() {
 
 //TODO_ LO DE LA INTERFAZ
 
-// Declaración de variables globales
-HWND g_hwnd;
-HBITMAP g_hBitmap;
-int g_x = 0;
-int g_y = 0;
-
 // Declaración de funciones
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -84,7 +77,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     WNDCLASSW wc = {0};
     wc.lpszClassName = L"Static image";
     wc.hInstance     = hInstance;
-    wc.hbrBackground = GetSysColorBrush(COLOR_3DFACE);
+    wc.hbrBackground = CreateSolidBrush(RGB(0, 0, 0));
     wc.lpfnWndProc   = WndProc;
     wc.hCursor       = LoadCursor(0,IDC_ARROW);
 
@@ -92,7 +85,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     RegisterClassW(&wc);
     CreateWindowW(wc.lpszClassName, L"Static image",
                   WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-                  100, 100, 330, 270, 0, 0, hInstance, 0);
+                  100, 100, 1250, 700, 0, 0, hInstance, 0);
 
     while (GetMessage(&msg, NULL, 0, 0)) {
 
@@ -104,25 +97,72 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    HWND hsti;
-
-    switch(msg) {
+    static HWND hsti;
+    static int x_jugador = 546;
+    static int y_jugador = 605;
+    switch (msg) {
 
         case WM_CREATE:
 
             LoadMyImage();
-            hsti = CreateWindowW(L"Static", L"",
-                                 WS_CHILD | WS_VISIBLE | SS_BITMAP,
-                                 5, 5, 300, 300, hwnd, (HMENU) 1, NULL, NULL);
 
-            SendMessage(hsti, STM_SETIMAGE,
-                        (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
+            for (int i = 0; i < 15; i++) {
+                int x = matrix[i][0];
+                int y = matrix[i][1];
+                HWND hImg;
+
+                switch (i / 3) {
+                    case 0:
+                        hImg = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x, y, 50, 50, hwnd, (HMENU) i, NULL, NULL);
+                        SendMessage(hImg, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap1);
+                        break;
+                    case 1:
+                    case 2:
+                        hImg = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x, y, 50, 50, hwnd, (HMENU) i, NULL, NULL);
+                        SendMessage(hImg, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap2);
+                        break;
+                    case 3:
+                    case 4:
+                        hImg = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x, y, 50, 50, hwnd, (HMENU) i, NULL, NULL);
+                        SendMessage(hImg, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap3);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd, (HMENU) 1, NULL, NULL);
+            SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
             break;
+
 
         case WM_DESTROY:
 
             DeleteObject(hBitmap);
             PostQuitMessage(0);
+            break;
+
+        case WM_KEYDOWN:
+            switch (wParam) {
+                case VK_LEFT:
+                    x_jugador -= 10;
+                    break;
+                case VK_RIGHT:
+                    x_jugador += 10;
+                    break;
+                case VK_UP:
+                    y_jugador -= 10;
+                    break;
+                case VK_DOWN:
+                    y_jugador += 10;
+                    break;
+                default:
+                    break;
+            }
+            if(x_jugador > 26 && x_jugador < 1166){
+                SetWindowPos(hsti, NULL, x_jugador, y_jugador, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+                printf("Posicion del alien x: %d , y: %d \n", x_jugador,y_jugador);
+            }
             break;
     }
 
@@ -131,6 +171,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 void LoadMyImage(void) {
 
+    hBitmap1 = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\pulpo.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmap2 = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\cangrejo.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmap3 = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\calamar.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
     hBitmap = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\nave.bmp", IMAGE_BITMAP,
                          0, 0, LR_LOADFROMFILE);
 }
