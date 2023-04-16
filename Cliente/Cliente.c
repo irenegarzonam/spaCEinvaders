@@ -97,48 +97,44 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    static HWND hsti;
+    static HWND hsti[60];
+    static HWND nave;
     static int x_jugador = 546;
     static int y_jugador = 605;
+    static int x[60], y[60], currentImage = 0;
     switch (msg) {
 
         case WM_CREATE:
 
             LoadMyImage();
 
-            for (int i = 0; i < 15; i++) {
-                int x = matrix[i][0];
-                int y = matrix[i][1];
-                HWND hImg;
-
-                switch (i / 3) {
-                    case 0:
-                        hImg = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x, y, 50, 50, hwnd, (HMENU) i, NULL, NULL);
-                        SendMessage(hImg, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap1);
-                        break;
-                    case 1:
-                    case 2:
-                        hImg = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x, y, 50, 50, hwnd, (HMENU) i, NULL, NULL);
-                        SendMessage(hImg, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap2);
-                        break;
-                    case 3:
-                    case 4:
-                        hImg = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x, y, 50, 50, hwnd, (HMENU) i, NULL, NULL);
-                        SendMessage(hImg, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap3);
-                        break;
-                    default:
-                        break;
+            for(int i=0; i<60; i++) {
+                x[i] = matrix[i][0];
+                y[i] = matrix[i][1];
+                hsti[i] = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
+                                        x[i], y[i], 50, 50, hwnd, (HMENU) (i+1), NULL, NULL);
+                int column = i % 5;
+                if(column < 1) {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapSquid);
+                } else if(column < 3) {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapCrab);
+                } else {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapOctopus);
                 }
             }
 
-            hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd, (HMENU) 1, NULL, NULL);
-            SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
+
+            nave = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd, (HMENU) 1, NULL, NULL);
+            SendMessage(nave, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
             break;
 
 
         case WM_DESTROY:
 
             DeleteObject(hBitmap);
+            DeleteObject(hBitmapOctopus);
+            DeleteObject(hBitmapCrab);
+            DeleteObject(hBitmapSquid);
             PostQuitMessage(0);
             break;
 
@@ -160,7 +156,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     break;
             }
             if(x_jugador > 26 && x_jugador < 1166){
-                SetWindowPos(hsti, NULL, x_jugador, y_jugador, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+                SetWindowPos(nave, NULL, x_jugador, y_jugador, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
                 printf("Posicion del alien x: %d , y: %d \n", x_jugador,y_jugador);
             }
             break;
@@ -171,9 +167,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 void LoadMyImage(void) {
 
-    hBitmap1 = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\pulpo.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-    hBitmap2 = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\cangrejo.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-    hBitmap3 = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\calamar.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmapOctopus = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\pulpo.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmapCrab = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\cangrejo.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmapSquid = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\calamar.bmp", IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
     hBitmap = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\nave.bmp", IMAGE_BITMAP,
                          0, 0, LR_LOADFROMFILE);
 }
