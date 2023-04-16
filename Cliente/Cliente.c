@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <windows.h>
+#include <string.h>
+#include <unistd.h>
 #pragma comment(lib, "ws2_32.lib") // enlazar con la librería ws2_32.lib
-
 #include "Cliente.h"
 
 //TODO_ LO DE PARTE CLIENTE
-int main() {
+int Cliente(int comando) {
 
-    /*
     // Inicializar la librería de sockets
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         printf("Error al inicializar la libreria de sockets: %d", WSAGetLastError());
@@ -21,6 +21,7 @@ int main() {
     }
 
     // Configurar el servidor al que nos conectaremos
+    memset(&servidor, '0', sizeof(servidor));
     servidor.sin_family = AF_INET;
     servidor.sin_addr.s_addr = inet_addr("127.0.0.1"); // dirección IP del servidor
     servidor.sin_port = htons(12345); // puerto del servidor
@@ -31,38 +32,56 @@ int main() {
         return 1;
     }
 
-    // Enviar datos al servidor
-    printf("Mensaje para enviar al servidor: ");
-    fgets(mensaje, 1024, stdin);
-    bytes_enviados = send(sockfd, mensaje, strlen(mensaje), 0);
-    if (bytes_enviados < 0) {
-        printf("Error al enviar datos al servidor: %d", WSAGetLastError());
-        return 1;
+    if(comando == 1){
+        // Enviar datos al servidor
+        printf("Mensaje para enviar al servidor: ");
+        fgets(mensaje, 1024, stdin);
+        bytes_enviados = send(sockfd, mensaje, strlen(mensaje), 0);
+        if (bytes_enviados < 0) {
+            printf("Error al enviar datos al servidor: %d", WSAGetLastError());
+            return 1;
+        }
+
+        // Recibir datos del servidor
+        bytes_recibidos = recv(sockfd, respuesta, 1024, 0);
+        if (bytes_recibidos < 0) {
+            printf("Error al recibir datos del servidor: %d", WSAGetLastError());
+            return 1;
+        }
+        respuesta[bytes_recibidos] = '\0';
+        printf("Respuesta recibida del servidor desde COmando 1: %s", respuesta);
     }
 
-    // Recibir datos del servidor
-    bytes_recibidos = recv(sockfd, respuesta, 1024, 0);
-    if (bytes_recibidos < 0) {
-        printf("Error al recibir datos del servidor: %d", WSAGetLastError());
-        return 1;
+    if(comando == 2){
+        char message[50];
+        strcpy(message, "Hola desde el cliente en C");
+        bytes_enviados = send(sockfd, message, strlen(message), 0);
+        if (bytes_enviados < 0) {
+            printf("Error al enviar datos al servidor: %d", WSAGetLastError());
+            return 1;
+        }
+        // Recibir datos del servidor
+        bytes_recibidos = recv(sockfd, respuesta, 1024, 0);
+        if (bytes_recibidos < 0) {
+            printf("Error al recibir datos del servidor: %d", WSAGetLastError());
+            return 1;
+        }
+        respuesta[bytes_recibidos] = '\0';
+        printf("Respuesta recibida del servidor desde COMando 2: %s", respuesta);
     }
-    respuesta[bytes_recibidos] = '\0';
-    printf("Respuesta recibida del servispace idor: %s", respuesta);
 
     // Cerrar el socket y liberar recursos
     closesocket(sockfd);
     WSACleanup();
-    return 0;
 
-     */
 
     HINSTANCE hInstance = GetModuleHandle(NULL);
     HINSTANCE hPrevInstance = NULL;
     LPSTR lpCmdLine = GetCommandLine();
     int nCmdShow = SW_SHOWDEFAULT;
 
-    WinMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
     return 0;
+
 }
 
 
@@ -101,12 +120,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     static HWND nave;
     static int x_jugador = 546;
     static int y_jugador = 605;
-    static int x[60], y[60], currentImage = 0;
+    static int x[60], y[60];
     switch (msg) {
 
         case WM_CREATE:
 
             LoadMyImage();
+            Cliente(1);
 
             for(int i=0; i<60; i++) {
                 x[i] = matrix[i][0];
@@ -142,6 +162,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             switch (wParam) {
                 case VK_LEFT:
                     x_jugador -= 10;
+                    Cliente(2);
                     break;
                 case VK_RIGHT:
                     x_jugador += 10;
@@ -173,3 +194,4 @@ void LoadMyImage(void) {
     hBitmap = LoadImageW(NULL, L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\nave.bmp", IMAGE_BITMAP,
                          0, 0, LR_LOADFROMFILE);
 }
+

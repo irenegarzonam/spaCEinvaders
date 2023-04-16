@@ -253,6 +253,13 @@ CMakeFiles/Cliente.dir/Cliente.c.obj: C:/Users/DylanG/Documents/1.UNIVERSIDAD/1.
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/winsvc.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/mcx.h \
   C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/imm.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/unistd.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/io.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/process.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/corecrt_startup.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sys/types.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/getopt.h \
+  C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/pthread_unistd.h \
   C:/Users/DylanG/Documents/1.UNIVERSIDAD/1.\ Semestres/5to.\ Semestre/1.\ Compi/Tarea\ Paradigma\ Imperativo\ OOP/spaCEinvaders/Cliente/Cliente.h
 
 
@@ -305,6 +312,8 @@ C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/_
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/combaseapi.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include/adxintrin.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/corecrt_startup.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/_mingw_off_t.h:
 
@@ -751,5 +760,17 @@ C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/s
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/winsvc.h:
 
 C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/mcx.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/unistd.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/io.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/process.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/sys/types.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/getopt.h:
+
+C:/Program\ Files/JetBrains/CLion\ 2023.1/bin/mingw/x86_64-w64-mingw32/include/pthread_unistd.h:
 
 C:/Users/DylanG/Documents/1.UNIVERSIDAD/1.\ Semestres/5to.\ Semestre/1.\ Compi/Tarea\ Paradigma\ Imperativo\ OOP/spaCEinvaders/Cliente/Cliente.h:

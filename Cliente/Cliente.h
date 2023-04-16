@@ -7,15 +7,13 @@ SOCKET sockfd;
 struct sockaddr_in servidor;
 char mensaje[1024], respuesta[1024];
 int bytes_enviados, bytes_recibidos;
+int Cliente(int comando);
 
 //Parte Interfaz
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
-void LoadMyImage(void);
-HBITMAP hBitmap;
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+int WINAPI VentanaJuego(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 void LoadMyImage(void);
 
-HBITMAP hBitmap;
 int matrix[60][2] = {
         {75,55},{75,135},{75,215},{75,295},{75,375},
         {155,55},{155,135},{155,215},{155,295},{155,375},
@@ -30,12 +28,7 @@ int matrix[60][2] = {
         {875,55},{875,135},{875,215},{875,295},{875,375},
         {955,55},{955,135},{955,215},{955,295},{955,375},
 };
-HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid;
-
-
-// Declarar variables globales
-int direction = 1; // 1 = derecha, -1 = izquierda
-int y_pos = 55;
+HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid, hBitmap;
 
 
 #endif //CLIENTE_CLIENTE_H
