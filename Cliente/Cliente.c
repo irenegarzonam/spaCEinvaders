@@ -213,7 +213,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 void convertStringToVariables(char str[]) {
     char *token = strtok(str, "_");  // Separamos la cadena en la primera subcadena
 
-    char var1[1], var2[1], var3[60], var4[302], var5[100];
+    char var1[1], var2[1], var3[60], var4[800], var5[100];
 
     if (token != NULL) {
         strncpy(var1, token, sizeof(var1));  // Copiamos la primera subcadena a la variable var1
@@ -239,8 +239,11 @@ void convertStringToVariables(char str[]) {
         }
     }
 
-    printf("var1: %s\n", var1);
-    printf("var2: %s\n", var2);
+    lives = atoi(var1);
+    score = atoi(var2);
+
+    printf("var1: %d\n", lives);
+    printf("var2: %d\n", score);
     //printf("var3: %s\n", var3);
 
 
@@ -334,7 +337,7 @@ void convertStringToVariables(char str[]) {
         if (k == 2) {
             k = 0;
             j2++;
-            if (j2 == 5) {
+            if (j2 == 12) {
                 j2 = 0;
                 i1++;
             }
@@ -346,7 +349,7 @@ void convertStringToVariables(char str[]) {
 
     // Imprimir la matriz
     for (int i = 0; i < 5; i++) {
-        for (int j = 0; j < 5; j++) {
+        for (int j = 0; j < 12; j++) {
             printf("(%d, %d) ", matrixAliens[i][j][0], matrixAliens[i][j][1]);
         }
         printf("\n");

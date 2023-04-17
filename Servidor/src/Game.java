@@ -11,11 +11,11 @@ public class Game implements Observer {
     public Game(Server server) {
         score = 0;
         lives = 2;
-        aliens = new Alien[5][5];
+        aliens = new Alien[5][12];
         bunkers = new ArrayList<Bunker>();
         this.server = server;
         this.activeGame = true;
-        createAliens(5, 5, 55, 75, 5);
+        createAliens(5, 12, 55, 75, 5);
         createBunkers();
     }
 

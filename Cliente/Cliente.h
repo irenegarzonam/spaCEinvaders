@@ -14,7 +14,7 @@ int closeConnection();
 int score;
 int lives;
 int matrixBunkers[4][3];
-int matrixAliens[5][5][2];
+int matrixAliens[5][12][2];
 
 //Parte Interfaz
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
