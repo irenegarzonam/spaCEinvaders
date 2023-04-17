@@ -237,10 +237,10 @@ void convertStringToVariables(char str[]) {
 
     printf("var1: %s\n", var1);
     printf("var2: %s\n", var2);
-    printf("var3: %s\n", var3);
+    //printf("var3: %s\n", var3);
 
 
-    //MATRIZ 1: -----------------------------------------------------------------------------------------------------------------------
+    //MATRIZ 1: --------------Matriz de Escudos------------------------------------------------------------------------------------------------
     char matrizStr[] = "[[237,500,100],[549,500,100],[861,500,100],[1173,500,100]]"; //Matriz de prueba
 
     // Eliminar los corchetes externos
@@ -288,9 +288,83 @@ void convertStringToVariables(char str[]) {
     free(str3);
 
     //---------------------------------------------------------------------------------------------------------------------------------
+    //MATRIZ 2: --------------Matriz de Aliens------------------------------------------------------------------------------------------------
+    //printf("var4: %s\n", var4);
+    char matrizStr5[] = "[[[60, 75], [140, 75], [220, 75], [300, 75], [380, 75]], [[60, 155], [140, 155], [220, 155], [300, 155], [380, 155]], [[60, 235], [140, 235], [220, 235], [300, 235], [380, 235]], [[60, 315], [140, 315], [220, 315], [300, 315], [380, 315]], [[60, 395], [140, 395], [220, 395], [300, 395], [380, 395]]]";
 
-    printf("var4: %s\n", var4);
+    // Eliminar los corchetes externos
+    char* matrizStr6 = matrizStr5 + 2;
+    matrizStr6[strlen(matrizStr6) - 2] = '\0';
+
+    // Eliminar los corchetes internos y los espacios en blanco
+    char* matrizStr7 = strdup(matrizStr6);
+    char* p6 = matrizStr7;
+    while (*p6) {
+        if (*p6 == '[' || *p6 == ']' || *p6 == ' ') {
+            memmove(p6, p6 + 1, strlen(p6));
+        } else {
+            ++p6;
+        }
+    }
+
+    // Eliminar los corchetes internos y los espacios en blanco (segunda capa)
+    char* matrizStr8 = strdup(matrizStr7);
+    p6 = matrizStr8;
+    while (*p6) {
+        if (*p6 == '[' || *p6 == ']' || *p6 == ' ') {
+            memmove(p6, p6 + 1, strlen(p6));
+        } else {
+            ++p6;
+        }
+    }
+
+    // Inicializar la matriz
+    int matrizAliens[5][5][2];
+
+    // Dividir la cadena en tokens
+    char* token3 = strtok(matrizStr8, ",");
+    int i1 = 0, j2 = 0, k = 0;
+
+    while (token3 != NULL) {
+        // Convertir el token a entero y almacenarlo en la matriz
+        matrizAliens[i1][j2][k] = atoi(token3);
+
+        // Mover al siguiente elemento de la matriz
+        k++;
+        if (k == 2) {
+            k = 0;
+            j2++;
+            if (j2 == 5) {
+                j2 = 0;
+                i1++;
+            }
+        }
+
+        // Obtener el siguiente token
+        token3 = strtok(NULL, ",");
+    }
+
+    // Imprimir la matriz
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("(%d, %d) ", matrizAliens[i][j][0], matrizAliens[i][j][1]);
+        }
+        printf("\n");
+    }
+
+    free(matrizStr7);
+    free(matrizStr8);
+
+
+
+
+
+
+
+
+
     printf("var5: %s\n", var5);
+
 }
 
 int convertMatrix(char matrizString[]) {
