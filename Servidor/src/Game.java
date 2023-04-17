@@ -125,18 +125,19 @@ public class Game implements Observer {
 
     String generateBunkersMatrix() {
         String Bunkers = "[";
+        int n = 0;
         for (Integer i = 0; i < bunkers.size(); i++) {
             Integer x = bunkers.get(i).getPosX();
             Integer y = bunkers.get(i).getPosY();
             Integer health = bunkers.get(i).getHealth();
             String add = "[" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(health) + "]";
             Bunkers += add;
+            n = i;
         }
         Bunkers += "]";
         System.out.println(Bunkers);
         return Bunkers;
     }
-
 
     String generateFinalString() {
         String Score = Integer.toString(this.score);

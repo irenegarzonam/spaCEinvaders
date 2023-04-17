@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <string.h>
-#include <unistd.h>
+#include <stdlib.h>
 
 #pragma comment(lib, "ws2_32.lib") // enlazar con la librería ws2_32.lib
 
@@ -53,12 +53,12 @@ int receiveFromServer() {
     }
     respuesta[bytes_recibidos] = '\0';
     printf("Respuesta recibida del servidor: %s", respuesta);
-    convertStringToVariables(respuesta, &score, &lives, matrixBunkers, matrixAliens);
+    convertStringToVariables(respuesta);
     return 0;
 }
 
 // Send to server method
-int sendToServer(char* message) {
+int sendToServer(char *message) {
     bytes_enviados = send(sockfd, message, strlen(message), 0);
     if (bytes_enviados < 0) {
         printf("Error al enviar datos al servidor: %d", WSAGetLastError());
@@ -115,13 +115,14 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     static int x_jugador = 546;
     static int y_jugador = 605;
     static int x[60], y[60];
+
     switch (msg) {
         case WM_CREATE:
 
             hvida = CreateWindowW(L"Static", L"Vidas: 2", WS_CHILD | WS_VISIBLE,
-                                       10, 630, 100, 30, hwnd, NULL, NULL, NULL);
+                                  10, 630, 100, 30, hwnd, NULL, NULL, NULL);
             hpuntaje = CreateWindowW(L"Static", L"Puntaje: 0", WS_CHILD | WS_VISIBLE,
-                                          120, 630, 100, 30, hwnd, NULL, NULL, NULL);
+                                     120, 630, 100, 30, hwnd, NULL, NULL, NULL);
 
 
             LoadMyImage();
@@ -205,45 +206,104 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
-void convertStringToVariables(char* str, int* var1, int* var2, int matrix1[][3], int matrix2[][5][2]) {
-    char* token;
-    char* rest = str;
-    int i, j, k;
+void convertStringToVariables(char str[]) {
+    char *token = strtok(str, "_");  // Separamos la cadena en la primera subcadena
 
-    // Parse first integer variable
-    token = strtok_r(rest, "_", &rest);
-    *var1 = atoi(token);
+    char var1[1], var2[1], var3[60], var4[302], var5[100];
 
-    // Parse second integer variable
-    token = strtok_r(rest, "_", &rest);
-    *var2 = atoi(token);
+    if (token != NULL) {
+        strncpy(var1, token, sizeof(var1));  // Copiamos la primera subcadena a la variable var1
+        token = strtok(NULL, "_");  // Separamos la cadena en la siguiente subcadena
 
-    // Parse first matrix
-    token = strtok_r(rest, "_", &rest);
-    token++;  // Skip the first '[' character
-    for (i = 0; i < 4; i++) {
-        for (j = 0; j < 3; j++) {
-            token = strtok_r(rest, ",", &rest);
-            matrix1[i][j] = atoi(token);
+        if (token != NULL) {
+            strncpy(var2, token, sizeof(var2));  // Copiamos la segunda subcadena a la variable var2
+            token = strtok(NULL, "_");
+
+            if (token != NULL) {
+                strncpy(var3, token, sizeof(var3));
+                token = strtok(NULL, "_");
+
+                if (token != NULL) {
+                    strncpy(var4, token, sizeof(var4));
+                    token = strtok(NULL, "_");
+
+                    if (token != NULL) {
+                        strncpy(var5, token, sizeof(var5));
+                    }
+                }
+            }
         }
-        token++;  // Skip the ',' character
     }
-    token++;  // Skip the ']' character
 
-    // Parse second matrix
-    token = strtok_r(rest, "_", &rest);
-    token++;  // Skip the first '[' character
-    for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            token = strtok_r(rest, ",", &rest);
-            matrix2[i][j][0] = atoi(token);
-            token = strtok_r(rest, "]", &rest);
-            token++;  // Skip the ']' or ',' character
-            matrix2[i][j][1] = atoi(token);
+    printf("var1: %s\n", var1);
+    printf("var2: %s\n", var2);
+    printf("var3: %s\n", var3);
+
+
+    //MATRIZ 1: -----------------------------------------------------------------------------------------------------------------------
+    char matrizStr[] = "[[237,500,100],[549,500,100],[861,500,100],[1173,500,100]]"; //Matriz de prueba
+
+    // Eliminar los corchetes externos
+    char *str2 = var3 + 1;
+    str2[strlen(str2) - 1] = '\0';
+
+    // Eliminar los corchetes internos y los espacios en blanco
+    char *str3 = strdup(str2);
+    char *p = str3;
+    while (*p) {
+        if (*p == '[' || *p == ']' || *p == ' ') {
+            memmove(p, p + 1, strlen(p));
+        } else {
+            ++p;
         }
-        token++;  // Skip the ',' character
-        token++;  // Skip the '[' character
     }
+
+    // Inicializar la matriz
+    int matriz[4][3];
+
+    // Dividir la cadena en tokens
+    char *token2 = strtok(str3, ",");
+    int i = 0, j = 0;
+
+    while (token2 != NULL) {
+        // Convertir el token a entero y almacenarlo en la matriz
+        matriz[i][j] = atoi(token2);
+        // Mover al siguiente elemento de la matriz
+        j++;
+        if (j == 3) {
+            j = 0;
+            i++;
+        }
+        // Obtener el siguiente token
+        token2 = strtok(NULL, ",");
+    }
+    // Imprimir la matriz
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+
+    free(str3);
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+
+    printf("var4: %s\n", var4);
+    printf("var5: %s\n", var5);
+}
+
+int convertMatrix(char matrizString[]) {
+    int matriz[60][2];
+
+    char *ptr = matrizString + 1; // saltamos el primer corchete
+
+    for (int i = 0; i < 60; i++) {
+        sscanf(ptr, "%d, %d", &matriz[i][0], &matriz[i][1]);
+        ptr += 7; // avanzamos 7 caracteres para saltar la coma y el espacio
+    }
+
+    return 0;
 }
 
 //AUX que tiene dirección de imagenes, tiene que cambiarlo en su PC porque son direcciones desde el disco, no desde root, es un error que hay que escribir en docu externa

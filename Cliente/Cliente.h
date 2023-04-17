@@ -19,7 +19,7 @@ int matrixAliens[5][5][2];
 //Parte Interfaz
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 void LoadMyImage(void);
-void convertStringToVariables(char* str, int* var1, int* var2, int matrix1[][3], int matrix2[][5][2]);
+void convertStringToVariables(char* str);
 
 //La idea es que esta matriz esté vacía
 int matrix[60][2] =
