@@ -60,7 +60,7 @@ public class Server {
         Server server = new Server();
         server.start(12345);
         Game game = new Game(server);
-        game.update();
+        game.updateGame();
         while (game.activeGame) {
             try {
                 Thread.sleep(100);

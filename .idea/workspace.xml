@@ -6,13 +6,8 @@
   <component name="CMakePresetLoader">{
   &quot;useNewFormat&quot;: true
 }</component>
-  <component name="CMakeReloadState">
-    <option name="reloaded" value="true" />
-  </component>
   <component name="CMakeRunConfigurationManager">
-    <generated>
-      <config projectName="Cliente" targetName="Cliente" />
-    </generated>
+    <generated />
   </component>
   <component name="CMakeSettings">
     <configurations>
@@ -21,8 +16,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e1dc09f-50e1-4117-9b93-c672a7d6baae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/Cliente.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cache-v2-27777b41f8ea770f4421.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-ba964eedf5517e05bba2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/target-Cliente-Debug-2f6f8caeeb9355a66246.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-06d48e123e77e4b7267b.json" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CMakeCCompiler.cmake" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CMakeRCCompiler.cmake" afterDir="false" />
@@ -30,16 +27,12 @@
       <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdC/a.exe" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/Cliente.dir/objects1.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Servidor/src/Ovni.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/Cliente.c" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/Cliente.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/Cliente.h" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/Cliente.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cache-v2-0ceefd1c66375602dd91.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-18f3ee595d3e9cb00f99.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-5072c94052a08a927490.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/index-2023-04-17T17-36-41-0281.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/index-2023-04-17T20-31-31-0923.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/target-Cliente-Debug-e5ff86143612c1e632ab.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-98deb88f10a077c59947.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeCache.txt" afterDir="false" />
@@ -70,8 +63,9 @@
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/Cliente.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/Cliente.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servidor/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servidor/src/Alien.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Alien.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Servidor/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servidor/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,47 +75,35 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MarkdownSettingsMigration">
-    <option name="stateVersion" value="1" />
-  </component>
-  <component name="ProjectId" id="2OTNl6qWsYPRaUDZH6A6DZSeQyl" />
+  <component name="ProjectId" id="2NvxYIqjcflgPMLXvd3WeZkrRpz" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/ale-r/OneDrive/Documents/GitHub/spaCEinvaders/Cliente/CMakeLists.txt&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="" />
-    </key>
-  </component>
   <component name="RunManager">
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
@@ -143,7 +125,7 @@
       <option name="presentableId" value="Default" />
       <updated>1681580761662</updated>
       <workItem from="1681580764138" duration="544000" />
-      <workItem from="1681754426967" duration="3186000" />
+      <workItem from="1681754426967" duration="12478000" />
     </task>
     <servers />
   </component>

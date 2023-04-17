@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Game implements Observer {
@@ -5,8 +6,10 @@ public class Game implements Observer {
     private Integer lives;
     private Alien[][] aliens;
     private List<Bunker> bunkers;
+    private Ovni ovni;
     private Server server;
     boolean activeGame;
+    boolean reachedRightCorner;
 
     public Game(Server server) {
         score = 0;
@@ -15,38 +18,59 @@ public class Game implements Observer {
         bunkers = new ArrayList<Bunker>();
         this.server = server;
         this.activeGame = true;
-        createAliens(5, 12, 55, 75, 5);
+        this.reachedRightCorner = false;
+        this.ovni = new Ovni();
+        createAliens(5, 12, 55, 75, 15);
         createBunkers();
     }
 
-    public void update() {
-        // Actualizar la posición de los extraterrestres, los ovnis y los disparos
-        // Verifica si algun alien llego al final de la pantalla
-        for (Integer i = 0; i < aliens.length; i++) {
-            for (Integer j = 0; j < aliens[0].length; j++) {
-                aliens[i][j].move();
-                if (aliens[i][j].getPosY() >= 700) {//1000 es el screen Height
-                    lives--;
-                    aliens[i][j].deleteObserver(this);
-                    aliens[i][j] = null;
+    public void updateGame() {
+        while(this.activeGame) {
+            boolean flag = this.reachedRightCorner;
+            // Actualizar la posición de los extraterrestres, los ovnis y los disparos
+            // Verifica si algun alien llego al final de la pantalla
+            for (Integer i = 0; i < aliens.length; i++) {
+                for (Integer j = 0; j < aliens[0].length; j++) {
+                    if(flag == this.reachedRightCorner) {
+                        if (aliens[i][j] != null) {
+                            aliens[i][j].move();
+                            if (aliens[i][j].getPosY() >= 700) {//1000 es el screen Height
+                                lives--;
+                                aliens[i][j].deleteObserver(this);
+                                aliens[i][j] = null;
+                            }
+                        }
+                    }
+                }
+                if (!this.ovni.exists && getRandomNumber() % 5 == 0) {
+                    createOvni();
+                }
+                if (this.ovni.exists) {
+                    this.ovni.move();
                 }
             }
+            verifyWin();
+            try {
+                Thread.sleep(1000); // waits for 1 second
+            } catch (InterruptedException e) {
+                // handle the exception if needed
+            }
+            this.server.sendToClient(generateFinalString());
         }
-        verifyWin();
-        this.server.sendToClient(generateFinalString());
-        if(this.activeGame){
-            this.update();
-        }
+    }
+
+    void setReachedRightCorner(){
+        this.reachedRightCorner = !this.reachedRightCorner;
     }
 
     public void createAliens(Integer numRows, Integer numCols, Integer x, Integer y, Integer speed) {
         for (Integer i = 0; i < numRows; i++) {
             for (Integer j = 0; j < numCols; j++) {
-                this.aliens[i][j] = new Alien(x + j * 80, y + i * 80, speed);
+                this.aliens[i][j] = new Alien(this, x + j * 80, y + i * 80, speed);
                 this.aliens[i][j].addObserver(this);
             }
         }
-        generateAliensMatrix();
+        //generateAliensMatrix();
     }
 
     public void deleteAlien(Integer Row, Integer Column) {
@@ -61,29 +85,31 @@ public class Game implements Observer {
         }
     }
 
+    public void createOvni(){
+        this.ovni = new Ovni(8);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof String && arg.equals("speed")) {
+        if (arg instanceof String && arg.equals("move")) {
             updateSpeed();
-        } else if (arg instanceof String && arg.equals("posY")) {
-            updatePosY();
         }
     }
 
     private void updateSpeed() {
         for (int row = 0; row < aliens.length; row++) {
             for (int col = 0; col < aliens[0].length; col++) {
-                aliens[row][col].changeSpeed();
+                //if(aliens[row][col] != null) {
+                    aliens[row][col].change();
+                //}
             }
         }
     }
 
-    private void updatePosY() {
-        for (int row = 0; row < aliens.length; row++) {
-            for (int col = 0; col < aliens[0].length; col++) {
-                aliens[row][col].changePosY();
-            }
-        }
+    public static Integer getRandomNumber() {
+        Random rand = new Random();
+        Integer randomInt = rand.nextInt(25) + 1; // Generates a random number between 1 and 25
+        return randomInt;
     }
 
     public void verifyWin() {
@@ -99,6 +125,7 @@ public class Game implements Observer {
         if (win) {
             this.lives += 1;
             this.score += 100;
+            //this.activeGame = false;
         }
     }
 
@@ -143,9 +170,9 @@ public class Game implements Observer {
         String Score = Integer.toString(this.score);
         String Lives = Integer.toString(this.lives);
         String FinalString = Score + "_" + Lives + "_" + generateBunkersMatrix() + "_" + generateAliensMatrix();
-        System.out.println();
-        System.out.print(FinalString);
-        System.out.println();
+        //System.out.println();
+        //System.out.print(FinalString);
+        //System.out.println();
         return FinalString;
     }
 }

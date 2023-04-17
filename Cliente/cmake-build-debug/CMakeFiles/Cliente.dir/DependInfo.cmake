@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/Users/DylanG/Documents/1.UNIVERSIDAD/1. Semestres/5to. Semestre/1. Compi/Tarea Paradigma Imperativo OOP/spaCEinvaders/Cliente/Cliente.c" "CMakeFiles/Cliente.dir/Cliente.c.obj" "gcc" "CMakeFiles/Cliente.dir/Cliente.c.obj.d"
+  "C:/Users/ale-r/OneDrive/Documents/GitHub/spaCEinvaders/Cliente/Cliente.c" "CMakeFiles/Cliente.dir/Cliente.c.obj" "gcc" "CMakeFiles/Cliente.dir/Cliente.c.obj.d"
   )
 
 # Targets to which this target links.

@@ -1,16 +1,18 @@
-import java.util.*;
+import java.sql.SQLOutput;
+import java.util.Observable;
 
 public class Alien extends Observable {
     private Integer posX;
     private Integer posY;
     private Integer speed;
+    private Game game;
 
-    private boolean updatingSpeed = false;
 
-    public Alien(Integer posX, Integer posY, Integer speed) {
+    public Alien(Game game, Integer posX, Integer posY, Integer speed) {
         this.posX = posX;
         this.posY = posY;
         this.speed = speed;
+        this.game = game;
     }
 
     public Integer getPosX() {
@@ -21,27 +23,36 @@ public class Alien extends Observable {
         return posY;
     }
 
-    public void changePosY() {
-        this.posY += 10;
-        setChanged();
-        notifyObservers("posY");
+    public Integer getSpeed() {
+        return speed;
     }
 
-    public void changeSpeed() {
-        if (!updatingSpeed) { // check if updatingSpeed flag is set
-            updatingSpeed = true;
-            speed *= -1;
-            setChanged();
-            notifyObservers("speed");
-            updatingSpeed = false;
-        }
+
+    public void change() {
+        this.speed *= -1;
+        this.posY += 10;
+        this.posX += this.speed;
     }
 
     public void move() {
-        if(this.posX <= 0 || this.posX >= 1250){
-            changeSpeed();
-            changePosY();
+        if (this.posX >= 1250) {
+            this.change();
+            if(!this.game.reachedRightCorner) {
+                setChanged();
+                notifyObservers("move");
+                this.game.setReachedRightCorner();
+            }
         }
-        this.posX += this.speed;
+        if (this.posX <= 0) {
+            this.change();
+            if(this.game.reachedRightCorner) {
+                //this.change();
+                setChanged();
+                notifyObservers("move");
+                this.game.setReachedRightCorner();
+            }
+        }else {
+            this.posX += this.speed;
+        }
     }
 }
