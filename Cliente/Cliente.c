@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <windows.h>
 #include <string.h>
-#include <unistd.h>
 
 #pragma comment(lib, "ws2_32.lib") // enlazar con la librería ws2_32.lib
 
@@ -53,7 +52,7 @@ int receiveFromServer() {
     }
     respuesta[bytes_recibidos] = '\0';
     printf("Respuesta recibida del servidor: %s", respuesta);
-    convertStringToVariables(respuesta, &score, &lives, matrixBunkers, matrixAliens);
+    convertStringToVariables(respuesta);
     return 0;
 }
 
@@ -211,47 +210,159 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
-void convertStringToVariables(char* str, int* var1, int* var2, int matrix1[4][3], int matrix2[5][12][2]) {
-    char* token;
-    char* rest = str;
-    int i, j, k;
+void convertStringToVariables(char str[]) {
+    char *token = strtok(str, "_");  // Separamos la cadena en la primera subcadena
 
-    // Parse first integer variable
-    token = strtok_r(rest, "_", &rest);
-    *var1 = atoi(token);
+    char var1[1], var2[1], var3[60], var4[302], var5[100];
 
-    // Parse second integer variable
-    token = strtok_r(rest, "_", &rest);
-    *var2 = atoi(token);
+    if (token != NULL) {
+        strncpy(var1, token, sizeof(var1));  // Copiamos la primera subcadena a la variable var1
+        token = strtok(NULL, "_");  // Separamos la cadena en la siguiente subcadena
 
-    // Parse first matrix
-    token = strtok_r(rest, "[", &rest); // skip opening '['
-    for (i = 0; i < 4; i++) {
-        token = strtok_r(rest, "[", &rest);
-        for (j = 0; j < 3; j++) {
-            token = strtok_r(rest, ",", &rest);
-            matrix1[i][j] = atoi(token);
+        if (token != NULL) {
+            strncpy(var2, token, sizeof(var2));  // Copiamos la segunda subcadena a la variable var2
+            token = strtok(NULL, "_");
+
+            if (token != NULL) {
+                strncpy(var3, token, sizeof(var3));
+                token = strtok(NULL, "_");
+
+                if (token != NULL) {
+                    strncpy(var4, token, sizeof(var4));
+                    token = strtok(NULL, "_");
+
+                    if (token != NULL) {
+                        strncpy(var5, token, sizeof(var5));
+                    }
+                }
+            }
         }
-            token = strtok_r(rest, "],", &rest);
     }
 
-    // Parse second matrix
-    token = strtok_r(rest, "_", &rest);
-    token = strtok_r(token, "[", &rest); // skip opening '['
-    for (i = 0; i < 5; i++) {
-        token = strtok_r(token, "[", &rest);
-        for (j = 0; j < 12; j++) {
-            token = strtok_r(token, "[", &rest);
-            token++;
-            matrix2[i][j][0] = atoi(token);
-            token = strtok_r(rest, ", ", &rest);
-            matrix2[i][j][1] = atoi(token);
-            token = strtok_r(token, "], ", &rest);
+    printf("var1: %s\n", var1);
+    printf("var2: %s\n", var2);
+    //printf("var3: %s\n", var3);
+
+
+    //MATRIZ 1: --------------Matriz de Escudos------------------------------------------------------------------------------------------------
+    char matrizStr[] = "[[237,500,100],[549,500,100],[861,500,100],[1173,500,100]]"; //Matriz de prueba
+
+    // Eliminar los corchetes externos
+    char *str2 = var3 + 1;
+    str2[strlen(str2) - 1] = '\0';
+
+    // Eliminar los corchetes internos y los espacios en blanco
+    char *str3 = strdup(str2);
+    char *p = str3;
+    while (*p) {
+        if (*p == '[' || *p == ']' || *p == ' ') {
+            memmove(p, p + 1, strlen(p));
+        } else {
+            ++p;
         }
-        token = strtok_r(rest, "]", &rest); // skip delimiter '_'
     }
+
+    // Inicializar la matriz
+    int matriz[4][3];
+
+    // Dividir la cadena en tokens
+    char *token2 = strtok(str3, ",");
+    int i = 0, j = 0;
+
+    while (token2 != NULL) {
+        // Convertir el token a entero y almacenarlo en la matriz
+        matriz[i][j] = atoi(token2);
+        // Mover al siguiente elemento de la matriz
+        j++;
+        if (j == 3) {
+            j = 0;
+            i++;
+        }
+        // Obtener el siguiente token
+        token2 = strtok(NULL, ",");
+    }
+    // Imprimir la matriz
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("%d ", matriz[i][j]);
+        }
+        printf("\n");
+    }
+
+    free(str3);
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+    //MATRIZ 2: --------------Matriz de Aliens------------------------------------------------------------------------------------------------
+    //printf("var4: %s\n", var4);
+    //char matrizStr5[] = "[[[60, 75], [140, 75], [220, 75], [300, 75], [380, 75]], [[60, 155], [140, 155], [220, 155], [300, 155], [380, 155]], [[60, 235], [140, 235], [220, 235], [300, 235], [380, 235]], [[60, 315], [140, 315], [220, 315], [300, 315], [380, 315]], [[60, 395], [140, 395], [220, 395], [300, 395], [380, 395]]]";
+
+    // Eliminar los corchetes externos
+    char* matrizStr6 = var4 + 2;
+    matrizStr6[strlen(matrizStr6) - 2] = '\0';
+
+    // Eliminar los corchetes internos y los espacios en blanco
+    char* matrizStr7 = strdup(matrizStr6);
+    char* p6 = matrizStr7;
+    while (*p6) {
+        if (*p6 == '[' || *p6 == ']' || *p6 == ' ') {
+            memmove(p6, p6 + 1, strlen(p6));
+        } else {
+            ++p6;
+        }
+    }
+
+    // Eliminar los corchetes internos y los espacios en blanco (segunda capa)
+    char* matrizStr8 = strdup(matrizStr7);
+    p6 = matrizStr8;
+    while (*p6) {
+        if (*p6 == '[' || *p6 == ']' || *p6 == ' ') {
+            memmove(p6, p6 + 1, strlen(p6));
+        } else {
+            ++p6;
+        }
+    }
+
+    // Inicializar la matriz
+    int matrixAliens[5][5][2];
+
+    // Dividir la cadena en tokens
+    char* token3 = strtok(matrizStr8, ",");
+    int i1 = 0, j2 = 0, k = 0;
+
+    while (token3 != NULL) {
+        // Convertir el token a entero y almacenarlo en la matriz
+        matrixAliens[i1][j2][k] = atoi(token3);
+
+        // Mover al siguiente elemento de la matriz
+        k++;
+        if (k == 2) {
+            k = 0;
+            j2++;
+            if (j2 == 5) {
+                j2 = 0;
+                i1++;
+            }
+        }
+
+        // Obtener el siguiente token
+        token3 = strtok(NULL, ",");
+    }
+
+    // Imprimir la matriz
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("(%d, %d) ", matrixAliens[i][j][0], matrixAliens[i][j][1]);
+        }
+        printf("\n");
+    }
+
+    free(matrizStr7);
+    free(matrizStr8);
+
+
+    printf("var5: %s\n", var5);
+
 }
-
 
 
 
