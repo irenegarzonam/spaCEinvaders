@@ -5,13 +5,17 @@ public class Game implements Observer {
     private Integer lives;
     private Alien[][] aliens;
     private List<Bunker> bunkers;
+    private Server server;
+    boolean activeGame;
 
-    public Game(Integer numRows, Integer numCols, Integer x, Integer y) {
+    public Game(Server server) {
         score = 0;
-        lives = 1;
-        aliens = new Alien[numRows][numCols];
+        lives = 2;
+        aliens = new Alien[5][5];
         bunkers = new ArrayList<Bunker>();
-        createAliens(numRows, numCols, x, y, 5);
+        this.server = server;
+        this.activeGame = true;
+        createAliens(5, 5, 55, 75, 5);
         createBunkers();
     }
 
@@ -29,6 +33,10 @@ public class Game implements Observer {
             }
         }
         verifyWin();
+        this.server.sendToClient(generateFinalString());
+        if(this.activeGame){
+            this.update();
+        }
     }
 
     public void createAliens(Integer numRows, Integer numCols, Integer x, Integer y, Integer speed) {
@@ -100,9 +108,13 @@ public class Game implements Observer {
         for (int row = 0; row < aliens.length; row++) {
             System.out.println();
             for (int col = 0; col < aliens[0].length; col++) {
-                matrix[row][col][0] = aliens[row][col].getPosX();
-                matrix[row][col][1] = aliens[row][col].getPosY();
-                System.out.print("{" + matrix[row][col][0] + "," + matrix[row][col][1] + "}");
+                if(aliens[row][col] != null) {
+                    matrix[row][col][0] = aliens[row][col].getPosX();
+                    matrix[row][col][1] = aliens[row][col].getPosY();
+                    System.out.print("{" + matrix[row][col][0] + "," + matrix[row][col][1] + "}");
+                }else{
+                    break;
+                }
             }
         }
         System.out.println("}");
@@ -130,6 +142,9 @@ public class Game implements Observer {
         String Score = Integer.toString(this.score);
         String Lives = Integer.toString(this.lives);
         String FinalString = Score + "_" + Lives + "_" + generateBunkersMatrix() + "_" + generateAliensMatrix();
+        System.out.println();
+        System.out.print(FinalString.length());
+        System.out.println();
         return FinalString;
     }
 }

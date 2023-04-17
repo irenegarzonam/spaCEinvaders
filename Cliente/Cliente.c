@@ -8,8 +8,15 @@
 #include "Cliente.h"
 
 //TODO_ LO DE PARTE CLIENTE
-int Cliente(int comando) {
+// Global variables
+WSADATA wsa;
+SOCKET sockfd;
+struct sockaddr_in servidor;
+char mensaje[1024], respuesta[1024];
+int bytes_enviados, bytes_recibidos;
 
+// Connect to server method
+int connectToServer() {
     // Inicializar la librería de sockets
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         printf("Error al inicializar la libreria de sockets: %d", WSAGetLastError());
@@ -33,64 +40,39 @@ int Cliente(int comando) {
         printf("Error al conectar con el servidor: %d", WSAGetLastError());
         return 1;
     }
+    return 0;
+}
 
-    /* Lista de comandos
-     * La idea aquí, es que di, por cada comando pida:
-     * 1: matriz para actualizarla
-     * 2: el resto que son vidas, temporizador, etc. xd
-     * De igual manera, aquí es donde está sucediendo eso que le digo, Commando == 1 funciona porque manda algo de consola, pero commando 2 no funciona
-     */
-
-    if (comando == 1) {
-        // Enviar datos al servidor
-        printf("Mensaje para enviar al servidor: ");
-        fgets(mensaje, 1024, stdin);
-        bytes_enviados = send(sockfd, mensaje, strlen(mensaje), 0);
-        if (bytes_enviados < 0) {
-            printf("Error al enviar datos al servidor: %d", WSAGetLastError());
-            return 1;
-        }
-
-        // Recibir datos del servidor
-        bytes_recibidos = recv(sockfd, respuesta, 1024, 0);
-        if (bytes_recibidos < 0) {
-            printf("Error al recibir datos del servidor: %d", WSAGetLastError());
-            return 1;
-        }
-        respuesta[bytes_recibidos] = '\0';
-        printf("Respuesta recibida del servidor desde COmando 1: %s", respuesta);
+// Receive from server method
+int receiveFromServer() {
+    // Recibir datos del servidor
+    bytes_recibidos = recv(sockfd, respuesta, 1024, 0);
+    if (bytes_recibidos < 0) {
+        printf("Error al recibir datos del servidor: %d", WSAGetLastError());
+        return 1;
     }
+    respuesta[bytes_recibidos] = '\0';
+    printf("Respuesta recibida del servidor: %s", respuesta);
+    convertStringToVariables(respuesta, &score, &lives, matrixBunkers, matrixAliens);
+    return 0;
+}
 
-    if (comando == 2) {
-        char message[50];
-        strcpy(message, "Hola desde el cliente en C");
-        bytes_enviados = send(sockfd, message, strlen(message), 0);
-        if (bytes_enviados < 0) {
-            printf("Error al enviar datos al servidor: %d", WSAGetLastError());
-            return 1;
-        }
-        // Recibir datos del servidor
-        bytes_recibidos = recv(sockfd, respuesta, 1024, 0);
-        if (bytes_recibidos < 0) {
-            printf("Error al recibir datos del servidor: %d", WSAGetLastError());
-            return 1;
-        }
-        respuesta[bytes_recibidos] = '\0';
-        printf("Respuesta recibida del servidor desde COMando 2: %s", respuesta);
+// Send to server method
+int sendToServer(char* message) {
+    bytes_enviados = send(sockfd, message, strlen(message), 0);
+    if (bytes_enviados < 0) {
+        printf("Error al enviar datos al servidor: %d", WSAGetLastError());
+        return 1;
     }
+    return 0;
+}
 
+// Close connection method
+int closeConnection() {
     // Cerrar el socket y liberar recursos
     closesocket(sockfd);
     WSACleanup();
-
-
-    HINSTANCE hInstance = GetModuleHandle(NULL);
-    HINSTANCE hPrevInstance = NULL;
-    LPSTR lpCmdLine = GetCommandLine();
-    int nCmdShow = SW_SHOWDEFAULT;
-
     return 0;
-
 }
 
 
@@ -130,18 +112,45 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     static HWND nave;
     static int x_jugador = 546;
     static int y_jugador = 605;
-    static int x[60], y[60];
+    //static int x[60], y[60];
     switch (msg) {
-
         case WM_CREATE:
 
             LoadMyImage();
             /* La idea aquí es llamar Cliente(1) para así tener la interfaz, y después tener un temporizador que cada X tiempo
              * actualice la matriz, o bueno, la sobreescriba xd
              */
-            Cliente(1);
+            connectToServer();
+            receiveFromServer();
+
+            int x[25], y[25]; // create separate arrays for x and y coordinates
+            int index = 0; // initialize index to 0
+            // loop over each element in the matrix and add the x and y coordinates to their respective arrays
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 5; j++) {
+                    x[index] = matrixAliens[i][j][0]; // add x coordinate to x array
+                    y[index] = matrixAliens[i][j][1]; // add y coordinate to y array
+                    index++;
+                }
+            }
+
+            for (int i = 0; i< 25 ; i++) {
+                hsti[i] = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
+                                            x[i], y[i], 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
+                int column = i % 5;
+                if (column < 1) {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapSquid);
+                } else if (column < 3) {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapCrab);
+                } else {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapOctopus);
+                }
+            }
+
+
 
             //Carga imagenes en pantalla recorriendo la matriz
+            /*
             for (int i = 0; i < 60; i++) {
                 x[i] = matrix[i][0];
                 y[i] = matrix[i][1];
@@ -156,7 +165,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapOctopus);
                 }
             }
-
+*/
 
             nave = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd,
                                  (HMENU) 1, NULL, NULL);
@@ -178,24 +187,25 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             switch (wParam) {
                 case VK_LEFT:
                     x_jugador -= 10;
-                    Cliente(2);
                     break;
                 case VK_RIGHT:
                     x_jugador += 10;
                     break;
+                    /*
                 case VK_UP:
                     y_jugador -= 10;
                     break;
                 case VK_DOWN:
                     y_jugador += 10;
                     break;
+                     */
                 default:
                     break;
             }
             //Límite para que no se salga
             if (x_jugador > 26 && x_jugador < 1166) {
                 SetWindowPos(nave, NULL, x_jugador, y_jugador, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
-                printf("Posicion del alien x: %d , y: %d \n", x_jugador, y_jugador);
+                printf("Posicion de la nave x: %d , y: %d \n", x_jugador, y_jugador);
             }
             break;
     }
@@ -203,21 +213,63 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
+void convertStringToVariables(char* str, int* var1, int* var2, int matrix1[][3], int matrix2[][5][2]) {
+    char* token;
+    char* rest = str;
+    int i, j, k;
+
+    // Parse first integer variable
+    token = strtok_r(rest, "_", &rest);
+    *var1 = atoi(token);
+
+    // Parse second integer variable
+    token = strtok_r(rest, "_", &rest);
+    *var2 = atoi(token);
+
+    // Parse first matrix
+    token = strtok_r(rest, "_", &rest);
+    token++;  // Skip the first '[' character
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 3; j++) {
+            token = strtok_r(rest, ",", &rest);
+            matrix1[i][j] = atoi(token);
+        }
+        token++;  // Skip the ',' character
+    }
+    token++;  // Skip the ']' character
+
+    // Parse second matrix
+    token = strtok_r(rest, "_", &rest);
+    token++;  // Skip the first '[' character
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            token = strtok_r(rest, ",", &rest);
+            matrix2[i][j][0] = atoi(token);
+            token = strtok_r(rest, "]", &rest);
+            token++;  // Skip the ']' or ',' character
+            matrix2[i][j][1] = atoi(token);
+        }
+        token++;  // Skip the ',' character
+        token++;  // Skip the '[' character
+    }
+}
+
 //AUX que tiene dirección de imagenes, tiene que cambiarlo en su PC porque son direcciones desde el disco, no desde root, es un error que hay que escribir en docu externa
 void LoadMyImage(void) {
 
     hBitmapOctopus = LoadImageW(NULL,
-                                L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\pulpo.bmp",
+                                L"imagenes\\pulpo.bmp",
                                 IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
     hBitmapCrab = LoadImageW(NULL,
-                             L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\cangrejo.bmp",
+                             L"imagenes\\cangrejo.bmp",
                              IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
     hBitmapSquid = LoadImageW(NULL,
-                              L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\calamar.bmp",
+                              L"imagenes\\calamar.bmp",
                               IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
     hBitmap = LoadImageW(NULL,
-                         L"C:\\Users\\DylanG\\Documents\\1.UNIVERSIDAD\\1. Semestres\\5to. Semestre\\1. Compi\\Tarea Paradigma Imperativo OOP\\spaCEinvaders\\Cliente\\imagenes\\nave.bmp",
+                         L"imagenes\\nave.bmp",
                          IMAGE_BITMAP,
                          0, 0, LR_LOADFROMFILE);
+
 }
 

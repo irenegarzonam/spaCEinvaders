@@ -7,14 +7,23 @@ SOCKET sockfd;
 struct sockaddr_in servidor;
 char mensaje[1024], respuesta[1024];
 int bytes_enviados, bytes_recibidos;
-int Cliente(int comando);
+int connectToServer();
+int receiveFromServer();
+int sendToServer(char* message);
+int closeConnection();
+int score;
+int lives;
+int matrixBunkers[4][3];
+int matrixAliens[5][5][2];
 
 //Parte Interfaz
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 void LoadMyImage(void);
+void convertStringToVariables(char* str, int* var1, int* var2, int matrix1[][3], int matrix2[][5][2]);
 
 //La idea es que esta matriz esté vacía
-int matrix[60][2] = {
+int matrix[60][2] =
+        {
         {75,55},{75,135},{75,215},{75,295},{75,375},
         {155,55},{155,135},{155,215},{155,295},{155,375},
         {235,55},{235,135},{235,215},{235,295},{235,375},

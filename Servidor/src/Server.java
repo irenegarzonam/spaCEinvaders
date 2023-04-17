@@ -2,52 +2,73 @@ import java.net.*;
 import java.io.*;
 
 public class Server {
-    public static void main(String[] args) {
-        Game juego = new Game(12,5, 75, 55);
-        juego.update();
-        /*
-        ServerSocket serverSocket = null;
-        Socket clientSocket = null;
-        PrintWriter out = null;
-        BufferedReader in = null;
+    private ServerSocket serverSocket;
+    private Socket clientSocket;
+    private PrintWriter out;
+    private BufferedReader in;
 
+    public void start(int port) {
         try {
-            // Crear el socket del servidor
-            serverSocket = new ServerSocket(12345);
+            // Create the server socket
+            serverSocket = new ServerSocket(port);
+            System.out.println("Server started on port " + port);
 
-            // Esperar a que un cliente se conecte
-            System.out.println("Esperando a un cliente...");
+            // Wait for a client to connect
+            System.out.println("Waiting for a client...");
+            clientSocket = serverSocket.accept();
+            System.out.println("Client connected: " + clientSocket);
 
-
-            while(true){
-
-                clientSocket = serverSocket.accept();
-                System.out.println("Cliente conectado: " + clientSocket);
-
-                // Crear el flujo de salida al cliente
-                out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-                // Crear el flujo de entrada desde el cliente
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-                String inputLine;
-                // Leer los mensajes del cliente
-                while ((inputLine = in.readLine()) != null) {
-                    System.out.println("Mensaje recibido del cliente: " + inputLine);
-
-                    // Enviar una respuesta al cliente
-                    out.println("Respuesta desde el servidor: " + inputLine);
-
-                }
-
-                clientSocket.close();
-            }
-
+            // Create the output and input streams
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         } catch (IOException e) {
-            System.out.println("Error en la conexión: " + e.getMessage());
+            System.out.println("Error starting server: " + e.getMessage());
         }
-
-         */
     }
 
+    public void stop() {
+        try {
+            if (out != null) {
+                out.close();
+            }
+            if (in != null) {
+                in.close();
+            }
+            if (clientSocket != null) {
+                clientSocket.close();
+            }
+            if (serverSocket != null) {
+                serverSocket.close();
+            }
+            System.out.println("Server stopped");
+        } catch (IOException e) {
+            System.out.println("Error stopping server: " + e.getMessage());
+        }
+    }
+
+    public void sendToClient(String message) {
+        out.println(message);
+    }
+
+    public String receiveFromClient() throws IOException {
+        String inputLine = in.readLine();
+        System.out.println("Message received from client: " + inputLine);
+        return inputLine;
+    }
+
+    public static void main(String[] args) {
+        Server server = new Server();
+        server.start(12345);
+        Game game = new Game(server);
+        game.update();
+        while (game.activeGame) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        server.stop();
+    }
 }
+
