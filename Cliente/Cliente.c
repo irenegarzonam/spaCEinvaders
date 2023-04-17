@@ -321,10 +321,6 @@ void convertStringToVariables(char str[]) {
             ++p6;
         }
     }
-
-    // Inicializar la matriz
-    int matrixAliens[5][5][2];
-
     // Dividir la cadena en tokens
     char* token3 = strtok(matrizStr8, ",");
     int i1 = 0, j2 = 0, k = 0;
