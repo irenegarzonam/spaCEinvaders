@@ -39,5 +39,7 @@ int matrix[60][2] =
 };
 HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid, hBitmap;
 
+int vidas = 2;
+int puntaje = 0;
 
 #endif //CLIENTE_CLIENTE_H
