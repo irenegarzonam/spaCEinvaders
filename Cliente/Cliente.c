@@ -114,7 +114,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     static HWND hpuntaje;
     static int x_jugador = 546;
     static int y_jugador = 605;
-    static int x[60], y[60];
     switch (msg) {
         case WM_CREATE:
 
@@ -131,11 +130,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             connectToServer();
             receiveFromServer();
 
+            int x[60], y[60]; // create separate arrays for x and y coordinates
+            int index = 0; // initialize index to 0
+            // loop over each element in the matrix and add the x and y coordinates to their respective arrays
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 12; j++) {
+                    x[index] = matrixAliens[i][j][0]; // add x coordinate to x array
+                    y[index] = matrixAliens[i][j][1]; // add y coordinate to y array
+                    index++;
+                }
+            }
 
             //Carga imagenes en pantalla recorriendo la matriz
-            for (int i = 0; i < 60; i++) {
-                x[i] = matrix[i][0];
-                y[i] = matrix[i][1];
+            for (int i = 0; i< 60 ; i++) {
                 hsti[i] = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
                                         x[i], y[i], 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
                 int column = i % 5;
@@ -147,7 +154,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapOctopus);
                 }
             }
-
 
             nave = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd,
                                  (HMENU) 1, NULL, NULL);
@@ -205,7 +211,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
-void convertStringToVariables(char* str, int* var1, int* var2, int matrix1[][3], int matrix2[][5][2]) {
+void convertStringToVariables(char* str, int* var1, int* var2, int matrix1[4][3], int matrix2[5][12][2]) {
     char* token;
     char* rest = str;
     int i, j, k;
@@ -219,32 +225,37 @@ void convertStringToVariables(char* str, int* var1, int* var2, int matrix1[][3],
     *var2 = atoi(token);
 
     // Parse first matrix
-    token = strtok_r(rest, "_", &rest);
-    token++;  // Skip the first '[' character
+    token = strtok_r(rest, "[", &rest); // skip opening '['
     for (i = 0; i < 4; i++) {
+        token = strtok_r(rest, "[", &rest);
         for (j = 0; j < 3; j++) {
             token = strtok_r(rest, ",", &rest);
             matrix1[i][j] = atoi(token);
         }
-        token++;  // Skip the ',' character
+            token = strtok_r(rest, "],", &rest);
     }
-    token++;  // Skip the ']' character
 
     // Parse second matrix
     token = strtok_r(rest, "_", &rest);
-    token++;  // Skip the first '[' character
+    token = strtok_r(token, "[", &rest); // skip opening '['
     for (i = 0; i < 5; i++) {
-        for (j = 0; j < 5; j++) {
-            token = strtok_r(rest, ",", &rest);
+        token = strtok_r(token, "[", &rest);
+        for (j = 0; j < 12; j++) {
+            token = strtok_r(token, "[", &rest);
+            token++;
             matrix2[i][j][0] = atoi(token);
-            token = strtok_r(rest, "]", &rest);
-            token++;  // Skip the ']' or ',' character
+            token = strtok_r(rest, ", ", &rest);
             matrix2[i][j][1] = atoi(token);
+            token = strtok_r(token, "], ", &rest);
         }
-        token++;  // Skip the ',' character
-        token++;  // Skip the '[' character
+        token = strtok_r(rest, "]", &rest); // skip delimiter '_'
     }
 }
+
+
+
+
+
 
 //AUX que tiene dirección de imagenes, tiene que cambiarlo en su PC porque son direcciones desde el disco, no desde root, es un error que hay que escribir en docu externa
 void LoadMyImage(void) {

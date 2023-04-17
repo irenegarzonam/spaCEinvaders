@@ -109,8 +109,8 @@ public class Game implements Observer {
             System.out.println();
             for (int col = 0; col < aliens[0].length; col++) {
                 if(aliens[row][col] != null) {
-                    matrix[row][col][0] = aliens[row][col].getPosX();
-                    matrix[row][col][1] = aliens[row][col].getPosY();
+                    matrix[row][col][0] = this.aliens[row][col].getPosX();
+                    matrix[row][col][1] = this.aliens[row][col].getPosY();
                     System.out.print("{" + matrix[row][col][0] + "," + matrix[row][col][1] + "}");
                 }else{
                     break;
@@ -129,7 +129,7 @@ public class Game implements Observer {
             Integer x = bunkers.get(i).getPosX();
             Integer y = bunkers.get(i).getPosY();
             Integer health = bunkers.get(i).getHealth();
-            String add = "[" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(health) + "]";
+            String add = "[" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(health) + "],";
             Bunkers += add;
         }
         Bunkers += "]";
@@ -143,7 +143,7 @@ public class Game implements Observer {
         String Lives = Integer.toString(this.lives);
         String FinalString = Score + "_" + Lives + "_" + generateBunkersMatrix() + "_" + generateAliensMatrix();
         System.out.println();
-        System.out.print(FinalString.length());
+        System.out.print(FinalString);
         System.out.println();
         return FinalString;
     }
