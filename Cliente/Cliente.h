@@ -41,5 +41,13 @@ HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid, hBitmap;
 
 int vidas = 2;
 int puntaje = 0;
+// Declarar variables globales para el handle e hilo
+struct Sprite {
+    int x;
+    int y;
+    HBITMAP image;
+} Sprite;
+
+struct Sprite sprites[60];
 
 #endif //CLIENTE_CLIENTE_H

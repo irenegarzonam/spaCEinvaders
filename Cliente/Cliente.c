@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <string.h>
+#include <unistd.h>
 
 #pragma comment(lib, "ws2_32.lib") // enlazar con la librería ws2_32.lib
 
@@ -115,11 +116,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     static int y_jugador = 605;
     switch (msg) {
         case WM_CREATE:
-
+        {
             hvida = CreateWindowW(L"Static", L"Vidas: 2", WS_CHILD | WS_VISIBLE,
-                                       10, 630, 100, 30, hwnd, NULL, NULL, NULL);
+                                  10, 630, 100, 30, hwnd, NULL, NULL, NULL);
             hpuntaje = CreateWindowW(L"Static", L"Puntaje: 0", WS_CHILD | WS_VISIBLE,
-                                          120, 630, 100, 30, hwnd, NULL, NULL, NULL);
+                                     120, 630, 100, 30, hwnd, NULL, NULL, NULL);
 
 
             LoadMyImage();
@@ -156,12 +157,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
             nave = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd,
                                  (HMENU) 1, NULL, NULL);
+
+            // Crear temporizador que actualiza las posiciones de las imágenes cada 500ms
+            SetTimer(hwnd, 1, 1000, NULL);
             SendMessage(nave, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
             break;
+        }
 
             //Cuando se cierra la ventana
         case WM_DESTROY:
-
+        {
             DeleteObject(hBitmap);
             DeleteObject(hBitmapOctopus);
             DeleteObject(hBitmapCrab);
@@ -169,8 +174,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             PostQuitMessage(0);
             break;
 
+        }
             //Movimiento de la nave
+
         case WM_KEYDOWN:
+        {
             switch (wParam) {
                 case VK_LEFT:
                     x_jugador -= 10;
@@ -205,6 +213,45 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 printf("Posicion de la nave x: %d , y: %d \n", x_jugador, y_jugador);
             }
             break;
+        }
+
+        case WM_TIMER:
+        {
+            // Actualizar posiciones de las imágenes con las nuevas posiciones de los aliens
+            receiveFromServer();
+            int x[60], y[60];
+            int index = 0;
+            for (int i = 0; i < 5; i++) {
+                for (int j = 0; j < 12; j++) {
+                    x[index] = matrixAliens[i][j][0];
+                    y[index] = matrixAliens[i][j][1];
+                    index++;
+                }
+            }
+
+
+            for (int i = 0; i < 60; i++) {
+                // Destruir la imagen anterior
+                DestroyWindow(hsti[i]);
+
+                // Crear una nueva imagen en la nueva posición
+                hsti[i] = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
+                                        x[i], y[i], 50, 50, hwnd, (HMENU)(i + 1), NULL, NULL);
+
+                // Establecer la imagen apropiada en función de la columna
+                int column = i % 5;
+                if (column < 1) {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmapSquid);
+                }
+                else if (column < 3) {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmapCrab);
+                }
+                else {
+                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmapOctopus);
+                }
+            }
+            break;
+        }
     }
 
     return DefWindowProcW(hwnd, msg, wParam, lParam);
@@ -248,7 +295,7 @@ void convertStringToVariables(char str[]) {
 
 
     //MATRIZ 1: --------------Matriz de Escudos------------------------------------------------------------------------------------------------
-    char matrizStr[] = "[[237,500,100],[549,500,100],[861,500,100],[1173,500,100]]"; //Matriz de prueba
+    //char matrizStr[] = "[[237,500,100],[549,500,100],[861,500,100],[1173,500,100]]"; //Matriz de prueba
 
     // Eliminar los corchetes externos
     char *str2 = var3 + 1;
@@ -362,10 +409,6 @@ void convertStringToVariables(char str[]) {
     printf("var5: %s\n", var5);
 
 }
-
-
-
-
 
 //AUX que tiene dirección de imagenes, tiene que cambiarlo en su PC porque son direcciones desde el disco, no desde root, es un error que hay que escribir en docu externa
 void LoadMyImage(void) {
