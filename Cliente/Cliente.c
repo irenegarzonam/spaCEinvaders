@@ -110,11 +110,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     static HWND hsti[60];
     static HWND nave;
+    static HWND hvida;
+    static HWND hpuntaje;
     static int x_jugador = 546;
     static int y_jugador = 605;
-    //static int x[60], y[60];
+    static int x[60], y[60];
     switch (msg) {
         case WM_CREATE:
+
+            hvida = CreateWindowW(L"Static", L"Vidas: 2", WS_CHILD | WS_VISIBLE,
+                                       10, 630, 100, 30, hwnd, NULL, NULL, NULL);
+            hpuntaje = CreateWindowW(L"Static", L"Puntaje: 0", WS_CHILD | WS_VISIBLE,
+                                          120, 630, 100, 30, hwnd, NULL, NULL, NULL);
+
 
             LoadMyImage();
             /* La idea aquí es llamar Cliente(1) para así tener la interfaz, y después tener un temporizador que cada X tiempo
@@ -123,34 +131,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             connectToServer();
             receiveFromServer();
 
-            int x[25], y[25]; // create separate arrays for x and y coordinates
-            int index = 0; // initialize index to 0
-            // loop over each element in the matrix and add the x and y coordinates to their respective arrays
-            for (int i = 0; i < 5; i++) {
-                for (int j = 0; j < 5; j++) {
-                    x[index] = matrixAliens[i][j][0]; // add x coordinate to x array
-                    y[index] = matrixAliens[i][j][1]; // add y coordinate to y array
-                    index++;
-                }
-            }
-
-            for (int i = 0; i< 25 ; i++) {
-                hsti[i] = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
-                                            x[i], y[i], 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
-                int column = i % 5;
-                if (column < 1) {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapSquid);
-                } else if (column < 3) {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapCrab);
-                } else {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapOctopus);
-                }
-            }
-
-
 
             //Carga imagenes en pantalla recorriendo la matriz
-            /*
             for (int i = 0; i < 60; i++) {
                 x[i] = matrix[i][0];
                 y[i] = matrix[i][1];
@@ -165,7 +147,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapOctopus);
                 }
             }
-*/
+
 
             nave = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd,
                                  (HMENU) 1, NULL, NULL);
@@ -199,6 +181,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     y_jugador += 10;
                     break;
                      */
+                case VK_SPACE:
+                    vidas--; // Actualizar variable de vidas
+                    char vidas_texto[10];
+                    sprintf(vidas_texto, "Vidas: %d", vidas);
+                    SetWindowText(hvida, vidas_texto); // Actualizar texto de ventana estática de vidas
+
+                    puntaje++; // Actualizar variable de puntaje
+                    char puntaje_texto[10];
+                    sprintf(puntaje_texto, "Puntaje: %d", puntaje);
+                    SetWindowText(hpuntaje, puntaje_texto); // Actualizar texto de ventana estática de puntaje
                 default:
                     break;
             }
