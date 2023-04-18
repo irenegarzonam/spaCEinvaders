@@ -95,7 +95,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     RegisterClassW(&wc);
     CreateWindowW(wc.lpszClassName, L"Static image",
                   WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-                  100, 100, 1250, 700, 0, 0, hInstance, 0);
+                  100, 100, 1400, 700, 0, 0, hInstance, 0);
 
     while (GetMessage(&msg, NULL, 0, 0)) {
 
@@ -154,7 +154,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 
             // Crear temporizador que actualiza las posiciones de las imágenes cada 500ms
-            SetTimer(hwnd, 1, 0.00000000000000000000000000000000000000000000000000000000000000000000000001, NULL);
+            SetTimer(hwnd, 1, 0.0000001, NULL);
             break;
         }
 
@@ -187,7 +187,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 case VK_SPACE:
                 {
                     // crear un nuevo disparo en la posición actual del jugador
-                    if (num_disparos < 3) {
+                    if (num_disparos < 100) {
                         disparo d = {x_jugador + 20, y_jugador - 10, hBitmapDisparoJugador};
                         disparos[num_disparos++] = d;
                     }

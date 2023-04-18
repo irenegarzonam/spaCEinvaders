@@ -46,8 +46,7 @@ typedef struct {
     HBITMAP imagen;
 } disparo;
 
-HBITMAP imagenes_pool[10];
-disparo disparos[3];
+disparo disparos[100];
 int num_disparos = 0;
 
 
