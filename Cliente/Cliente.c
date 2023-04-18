@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <windows.h>
 #include <string.h>
-#include <unistd.h>
+#include <stdlib.h>
 
 #pragma comment(lib, "ws2_32.lib") // enlazar con la librería ws2_32.lib
 
@@ -108,12 +108,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 //Aquí sucede toda la lógica
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    static HWND hsti[60];
-    static HWND nave;
-    static HWND hvida;
-    static HWND hpuntaje;
-    static int x_jugador = 546;
-    static int y_jugador = 605;
     switch (msg) {
         case WM_CREATE:
         {
@@ -121,8 +115,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                                   10, 630, 100, 30, hwnd, NULL, NULL, NULL);
             hpuntaje = CreateWindowW(L"Static", L"Puntaje: 0", WS_CHILD | WS_VISIBLE,
                                      120, 630, 100, 30, hwnd, NULL, NULL, NULL);
-
-
             LoadMyImage();
             /* La idea aquí es llamar Cliente(1) para así tener la interfaz, y después tener un temporizador que cada X tiempo
              * actualice la matriz, o bueno, la sobreescriba xd
@@ -130,37 +122,39 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             connectToServer();
             receiveFromServer();
 
-            int x[60], y[60]; // create separate arrays for x and y coordinates
-            int index = 0; // initialize index to 0
-            // loop over each element in the matrix and add the x and y coordinates to their respective arrays
+            // loop over each element in the matrix and add the x and y coordinates to the Coord array
+            int index = 0;
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 12; j++) {
-                    x[index] = matrixAliens[i][j][0]; // add x coordinate to x array
-                    y[index] = matrixAliens[i][j][1]; // add y coordinate to y array
+                    coords[index].x = matrixAliens[i][j][0]; // add x coordinate to Coord array
+                    coords[index].y = matrixAliens[i][j][1]; // add y coordinate to Coord array
                     index++;
                 }
             }
 
-            //Carga imagenes en pantalla recorriendo la matriz
-            for (int i = 0; i< 60 ; i++) {
-                hsti[i] = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
-                                        x[i], y[i], 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
+            //Carga imagenes en pantalla utilizando las coordenadas en la estructura
+            for (int i = 0; i < 60; i++) {
+                HWND hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
+                                          coords[i].x, coords[i].y, 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
                 int column = i % 5;
                 if (column < 1) {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapSquid);
+                    coords[i].imagen = hBitmapSquid;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) coords[i].imagen);
                 } else if (column < 3) {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapCrab);
+                    coords[i].imagen = hBitmapCrab;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) coords[i].imagen);
                 } else {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmapOctopus);
+                    coords[i].imagen = hBitmapOctopus;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) coords[i].imagen);
                 }
             }
-
             nave = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd,
                                  (HMENU) 1, NULL, NULL);
+            SendMessage(nave, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
+
 
             // Crear temporizador que actualiza las posiciones de las imágenes cada 500ms
-            SetTimer(hwnd, 1, 1000, NULL);
-            SendMessage(nave, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
+            SetTimer(hwnd, 1, 0.00000000000000000000000000000000000000000000000000000000000000000000000001, NULL);
             break;
         }
 
@@ -181,29 +175,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         {
             switch (wParam) {
                 case VK_LEFT:
+                {
                     x_jugador -= 10;
                     break;
+                }
                 case VK_RIGHT:
+                {
                     x_jugador += 10;
                     break;
-                    /*
-                case VK_UP:
-                    y_jugador -= 10;
-                    break;
-                case VK_DOWN:
-                    y_jugador += 10;
-                    break;
-                     */
+                }
                 case VK_SPACE:
-                    vidas--; // Actualizar variable de vidas
-                    char vidas_texto[10];
-                    sprintf(vidas_texto, "Vidas: %d", vidas);
-                    SetWindowText(hvida, vidas_texto); // Actualizar texto de ventana estática de vidas
-
-                    puntaje++; // Actualizar variable de puntaje
-                    char puntaje_texto[10];
-                    sprintf(puntaje_texto, "Puntaje: %d", puntaje);
-                    SetWindowText(hpuntaje, puntaje_texto); // Actualizar texto de ventana estática de puntaje
+                {
+                    // crear un nuevo disparo en la posición actual del jugador
+                    if (num_disparos < 3) {
+                        disparo d = {x_jugador + 20, y_jugador - 10, hBitmapDisparoJugador};
+                        disparos[num_disparos++] = d;
+                    }
+                    break;
+                }
                 default:
                     break;
             }
@@ -219,35 +208,74 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         {
             // Actualizar posiciones de las imágenes con las nuevas posiciones de los aliens
             receiveFromServer();
-            int x[60], y[60];
             int index = 0;
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 12; j++) {
-                    x[index] = matrixAliens[i][j][0];
-                    y[index] = matrixAliens[i][j][1];
+                    coords[index].x = matrixAliens[i][j][0]; // add x coordinate to Coord array
+                    coords[index].y = matrixAliens[i][j][1]; // add y coordinate to Coord array
                     index++;
                 }
             }
-
-
             for (int i = 0; i < 60; i++) {
-                // Destruir la imagen anterior
-                DestroyWindow(hsti[i]);
+                HWND hsti = GetDlgItem(hwnd, i+1);
+                //Mover la imagen a la nueva posición utilizando la función MoveWindow
+                MoveWindow(hsti, coords[i].x, coords[i].y, 50, 50, TRUE);
+            }
 
-                // Crear una nueva imagen en la nueva posición
-                hsti[i] = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
-                                        x[i], y[i], 50, 50, hwnd, (HMENU)(i + 1), NULL, NULL);
+            // mover cada disparo hacia arriba
+            for (int i = 0; i < num_disparos; i++) {
+                disparos[i].y -= 10;
+                HWND hstd = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
+                                          disparos[i].x, disparos[i].y, 10, 30, hwnd, (HMENU) (i + 100), NULL, NULL);
+                SendMessage(hstd, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) disparos[i].imagen);
+                if (disparos[i].y < -10) {
+                    // si el disparo sale de la pantalla, destruir la imagen y reutilizar la estructura disparo
+                    DestroyWindow(hstd);
+                    disparos[i].y = 0;
+                    disparos[i].x = 0;
+                    disparos[i].imagen = NULL;
+                } else {
+                    // detectar colisiones entre el disparo y los aliens
+                    for (int j = 0; j < 60; j++) {
+                        if (disparos[i].x >= coords[j].x && disparos[i].x <= coords[j].x + 50
+                            && disparos[i].y >= coords[j].y && disparos[i].y <= coords[j].y + 50) {
+                            // si hay colision, destruir la imagen del alien y reutilizar la estructura disparo
 
-                // Establecer la imagen apropiada en función de la columna
-                int column = i % 5;
-                if (column < 1) {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmapSquid);
-                }
-                else if (column < 3) {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmapCrab);
-                }
-                else {
-                    SendMessage(hsti[i], STM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)hBitmapOctopus);
+                            if(coords[j].imagen == hBitmapSquid){
+                                sendToServer("calamar");
+                                puntaje += 10; // Actualizar variable de puntaje
+                                char puntaje_texto[10];
+                                sprintf(puntaje_texto, "Puntaje: %d", puntaje);
+                                SetWindowText(hpuntaje, puntaje_texto); // Actualizar texto de ventana estática de puntaje
+                            }
+
+                            if(coords[j].imagen == hBitmapOctopus){
+                                sendToServer("pulpo");
+                                puntaje += 40; // Actualizar variable de puntaje
+                                char puntaje_texto[10];
+                                sprintf(puntaje_texto, "Puntaje: %d", puntaje);
+                                SetWindowText(hpuntaje, puntaje_texto); // Actualizar texto de ventana estática de puntaje
+                            }
+
+                            if(coords[j].imagen == hBitmapCrab){
+                                sendToServer("cangrejo");
+                                puntaje += 20; // Actualizar variable de puntaje
+                                char puntaje_texto[10];
+                                sprintf(puntaje_texto, "Puntaje: %d", puntaje);
+                                SetWindowText(hpuntaje, puntaje_texto); // Actualizar texto de ventana estática de puntaje
+                            }
+
+                            DestroyWindow(GetDlgItem(hwnd, j+1));
+                            matrixAliens[j/12][j%12][0] = -100;
+                            matrixAliens[j/12][j%12][1] = -100;
+                            DestroyWindow(hstd);
+                            disparos[i].y = 0;
+                            disparos[i].x = 0;
+                            disparos[i].imagen = NULL;
+
+                            break;
+                        }
+                    }
                 }
             }
             break;
@@ -312,21 +340,18 @@ void convertStringToVariables(char str[]) {
         }
     }
 
-    // Inicializar la matriz
-    int matriz[4][3];
-
     // Dividir la cadena en tokens
     char *token2 = strtok(str3, ",");
-    int i = 0, j = 0;
+    int i2 = 0, j3 = 0;
 
     while (token2 != NULL) {
         // Convertir el token a entero y almacenarlo en la matriz
-        matriz[i][j] = atoi(token2);
+        matrixBunkers[i2][j3] = atoi(token2);
         // Mover al siguiente elemento de la matriz
-        j++;
-        if (j == 3) {
-            j = 0;
-            i++;
+        j3++;
+        if (j3 == 3) {
+            j3 = 0;
+            i2++;
         }
         // Obtener el siguiente token
         token2 = strtok(NULL, ",");
@@ -334,7 +359,7 @@ void convertStringToVariables(char str[]) {
     // Imprimir la matriz
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 3; j++) {
-            printf("%d ", matriz[i][j]);
+            printf("%d ", matrixBunkers[i][j]);
         }
         printf("\n");
     }
@@ -427,5 +452,11 @@ void LoadMyImage(void) {
                          IMAGE_BITMAP,
                          0, 0, LR_LOADFROMFILE);
 
+    hBitmapDisparoJugador = LoadImageW(NULL,
+                                       L"imagenes\\disparo_jugador.bmp",
+                                       IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmapDisparoAlien = LoadImageW(NULL,
+                                       L"imagenes\\disparo_alien.bmp",
+                                       IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 }
 
