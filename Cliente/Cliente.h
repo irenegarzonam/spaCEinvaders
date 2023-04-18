@@ -16,38 +16,39 @@ int lives;
 int matrixBunkers[4][3];
 int matrixAliens[5][12][2];
 
+static HWND nave;
+static HWND hvida;
+static HWND hpuntaje;
+static int x_jugador = 546;
+static int y_jugador = 605;
+
 //Parte Interfaz
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 void LoadMyImage(void);
 void convertStringToVariables(char str[]);
 
-//La idea es que esta matriz esté vacía
-int matrix[60][2] =
-        {
-        {75,55},{75,135},{75,215},{75,295},{75,375},
-        {155,55},{155,135},{155,215},{155,295},{155,375},
-        {235,55},{235,135},{235,215},{235,295},{235,375},
-        {315,55},{315,135},{315,215},{315,295},{315,375},
-        {395,55},{395,135},{395,215},{395,295},{395,375},
-        {475,55},{475,135},{475,215},{475,295},{475,375},
-        {555,55},{555,135},{555,215},{555,295},{555,375},
-        {635,55},{635,135},{635,215},{635,295},{635,375},
-        {715,55},{715,135},{715,215},{715,295},{715,375},
-        {795,55},{795,135},{795,215},{795,295},{795,375},
-        {875,55},{875,135},{875,215},{875,295},{875,375},
-        {955,55},{955,135},{955,215},{955,295},{955,375},
-};
-HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid, hBitmap;
+HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid, hBitmap, hBitmapDisparoJugador, hBitmapDisparoAlien;
 
 int vidas = 2;
 int puntaje = 0;
 // Declarar variables globales para el handle e hilo
-struct Sprite {
+
+typedef struct {
     int x;
     int y;
-    HBITMAP image;
-} Sprite;
+    HBITMAP imagen;
+} Coord;
+Coord coords[60];
 
-struct Sprite sprites[60];
+typedef struct {
+    int x;
+    int y;
+    HBITMAP imagen;
+} disparo;
 
-#endif //CLIENTE_CLIENTE_H
+HBITMAP imagenes_pool[10];
+disparo disparos[3];
+int num_disparos = 0;
+
+
+#endif /* CLIENTE_CLIENTE_H */

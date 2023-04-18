@@ -1,5 +1,5 @@
-CMakeFiles/Cliente.dir/Cliente.c.obj: \
- C:\Users\DylanG\Documents\1.UNIVERSIDAD\1.\ Semestres\5to.\ Semestre\1.\ Compi\Tarea\ Paradigma\ Imperativo\ OOP\spaCEinvaders\Cliente\Cliente.c \
+CMakeFiles/Cliente.dir/Cliente2.c.obj: \
+ C:\Users\DylanG\Documents\1.UNIVERSIDAD\1.\ Semestres\5to.\ Semestre\1.\ Compi\Tarea\ Paradigma\ Imperativo\ OOP\spaCEinvaders\Cliente\Cliente2.c \
  C:/PROGRA~1/JETBRA~1/CLION2~1.1/bin/mingw/x86_64-w64-mingw32/include/stdio.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.1/bin/mingw/x86_64-w64-mingw32/include/corecrt_stdio_config.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.1/bin/mingw/x86_64-w64-mingw32/include/corecrt.h \
@@ -251,4 +251,4 @@ CMakeFiles/Cliente.dir/Cliente.c.obj: \
  C:/PROGRA~1/JETBRA~1/CLION2~1.1/bin/mingw/x86_64-w64-mingw32/include/winsvc.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.1/bin/mingw/x86_64-w64-mingw32/include/mcx.h \
  C:/PROGRA~1/JETBRA~1/CLION2~1.1/bin/mingw/x86_64-w64-mingw32/include/imm.h \
- C:\Users\DylanG\Documents\1.UNIVERSIDAD\1.\ Semestres\5to.\ Semestre\1.\ Compi\Tarea\ Paradigma\ Imperativo\ OOP\spaCEinvaders\Cliente\Cliente.h
+ C:\Users\DylanG\Documents\1.UNIVERSIDAD\1.\ Semestres\5to.\ Semestre\1.\ Compi\Tarea\ Paradigma\ Imperativo\ OOP\spaCEinvaders\Cliente\Cliente2.h

@@ -15,7 +15,7 @@ public class Game implements Observer {
         bunkers = new ArrayList<Bunker>();
         this.server = server;
         this.activeGame = true;
-        createAliens(5, 12, 55, 75, 5);
+        createAliens(5, 12, 55, 75, 2);
         createBunkers();
     }
 
