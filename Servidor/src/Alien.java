@@ -35,7 +35,7 @@ public class Alien extends Observable {
     }
 
     public void move() {
-        if (this.posX >= 1250) {
+        if (this.posX >= 1200) {
             this.change();
             if(!this.game.reachedRightCorner) {
                 setChanged();
