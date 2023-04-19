@@ -21,25 +21,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6e1dc09f-50e1-4117-9b93-c672a7d6baae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/Cliente.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CMakeCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CMakeRCCompiler.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CMakeSystem.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdC/CMakeCCompilerId.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/3.24.2/CompilerIdC/a.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/Cliente.dir/objects1.rsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/Cliente.c" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/Cliente.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/Cliente.h" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/Cliente.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cache-v2-0ceefd1c66375602dd91.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-18f3ee595d3e9cb00f99.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-5072c94052a08a927490.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/index-2023-04-17T17-36-41-0281.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/index-2023-04-18T01-45-14-0007.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/target-Cliente-Debug-e5ff86143612c1e632ab.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-98deb88f10a077c59947.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeCache.txt" afterDir="false" />
@@ -70,8 +58,11 @@
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/Cliente.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/Cliente.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Servidor/.idea/runConfigurations.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servidor/src/Alien.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Alien.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servidor/src/Bunker.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Bunker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Servidor/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servidor/src/Ovni.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Ovni.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servidor/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,6 +135,7 @@
       <updated>1681580761662</updated>
       <workItem from="1681580764138" duration="544000" />
       <workItem from="1681754426967" duration="3186000" />
+      <workItem from="1681855481589" duration="9284000" />
     </task>
     <servers />
   </component>

@@ -116,9 +116,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             hpuntaje = CreateWindowW(L"Static", L"Puntaje: 0", WS_CHILD | WS_VISIBLE,
                                      120, 630, 100, 30, hwnd, NULL, NULL, NULL);
             LoadMyImage();
-            /* La idea aquí es llamar Cliente(1) para así tener la interfaz, y después tener un temporizador que cada X tiempo
-             * actualice la matriz, o bueno, la sobreescriba xd
-             */
             connectToServer();
             receiveFromServer();
 
@@ -131,7 +128,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     index++;
                 }
             }
-
             //Carga imagenes en pantalla utilizando las coordenadas en la estructura
             for (int i = 0; i < 60; i++) {
                 HWND hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
@@ -148,6 +144,26 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) coords[i].imagen);
                 }
             }
+
+            for (int i = 0; i<4; i++){
+                Bcoords[i].x = matrixBunkers[i][0];
+                Bcoords[i].y = matrixBunkers[i][1];
+                Bcoords[i].health = matrixBunkers[i][2];
+                HWND hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
+                                          Bcoords[i].x, Bcoords[i].y, 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
+                if(Bcoords->health == 100){
+                    Bcoords[i].imagen = hBitmapBunker100;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
+                }else if(Bcoords->health < 100 && Bcoords->health >= 50){
+                    Bcoords[i].imagen = hBitmapBunker75;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
+                }else if(Bcoords->health < 50 && Bcoords->health > 0){
+                    Bcoords[i].imagen = hBitmapBunker50;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
+            }else {
+                }
+            }
+
             nave = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP, x_jugador, y_jugador, 50, 50, hwnd,
                                  (HMENU) 1, NULL, NULL);
             SendMessage(nave, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) hBitmap);
@@ -165,7 +181,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             DeleteObject(hBitmapOctopus);
             DeleteObject(hBitmapCrab);
             DeleteObject(hBitmapSquid);
+            DeleteObject(hBitmapBunker100);
+            DeleteObject(hBitmapBunker75);
+            DeleteObject(hBitmapBunker50);
             PostQuitMessage(0);
+            closeConnection();
             break;
 
         }
@@ -222,6 +242,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 MoveWindow(hsti, coords[i].x, coords[i].y, 50, 50, TRUE);
             }
 
+            for (int i = 0; i<4; i++){
+                Bcoords[i].x = matrixBunkers[i][0];
+                Bcoords[i].y = matrixBunkers[i][1];
+                Bcoords[i].health = matrixBunkers[i][2];
+                HWND hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
+                                          Bcoords[i].x, Bcoords[i].y, 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
+                if(Bcoords->health == 100){
+                    Bcoords[i].imagen = hBitmapBunker100;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
+                }else if(Bcoords->health < 100 && Bcoords->health >= 50){
+                    Bcoords[i].imagen = hBitmapBunker75;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
+                }else if(Bcoords->health < 50){
+                    Bcoords[i].imagen = hBitmapBunker50;
+                    SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
+                }
+            }
+
             // mover cada disparo hacia arriba
             for (int i = 0; i < num_disparos; i++) {
                 disparos[i].y -= 10;
@@ -241,8 +279,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                             && disparos[i].y >= coords[j].y && disparos[i].y <= coords[j].y + 50) {
                             // si hay colision, destruir la imagen del alien y reutilizar la estructura disparo
 
+                            char respuestaServidor[40];
                             if(coords[j].imagen == hBitmapSquid){
-                                sendToServer("calamar");
+                                strcat(respuestaServidor, "calamar_");
+                                sprintf(respuestaServidor, "%d", coords[i].x);
+                                strcat(respuestaServidor, ",");
+                                sprintf(respuestaServidor, "%d", coords[i].y);
+                                sendToServer(respuestaServidor);
                                 puntaje += 10; // Actualizar variable de puntaje
                                 char puntaje_texto[10];
                                 sprintf(puntaje_texto, "Puntaje: %d", puntaje);
@@ -250,7 +293,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                             }
 
                             if(coords[j].imagen == hBitmapOctopus){
-                                sendToServer("pulpo");
+                                strcat(respuestaServidor, "pulpo_");
+                                sprintf(respuestaServidor, "%d", coords[i].x);
+                                strcat(respuestaServidor, ",");
+                                sprintf(respuestaServidor, "%d", coords[i].y);
+                                sendToServer(respuestaServidor);
                                 puntaje += 40; // Actualizar variable de puntaje
                                 char puntaje_texto[10];
                                 sprintf(puntaje_texto, "Puntaje: %d", puntaje);
@@ -258,7 +305,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                             }
 
                             if(coords[j].imagen == hBitmapCrab){
-                                sendToServer("cangrejo");
+                                strcat(respuestaServidor, "cangrejo_");
+                                sprintf(respuestaServidor, "%d", coords[i].x);
+                                strcat(respuestaServidor, ",");
+                                sprintf(respuestaServidor, "%d", coords[i].y);
+                                sendToServer(respuestaServidor);
                                 puntaje += 20; // Actualizar variable de puntaje
                                 char puntaje_texto[10];
                                 sprintf(puntaje_texto, "Puntaje: %d", puntaje);
@@ -281,7 +332,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             break;
         }
     }
-
     return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
@@ -457,6 +507,15 @@ void LoadMyImage(void) {
                                        IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
     hBitmapDisparoAlien = LoadImageW(NULL,
                                        L"imagenes\\disparo_alien.bmp",
+                                       IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmapBunker100 = LoadImageW(NULL,
+                                       L"imagenes\\Bunker100.bmp",
+                                       IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmapBunker75 = LoadImageW(NULL,
+                                     L"imagenes\\Bunker75.bmp",
+                                     IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    hBitmapBunker50 = LoadImageW(NULL,
+                                       L"imagenes\\Bunker50.bmp",
                                        IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 }
 

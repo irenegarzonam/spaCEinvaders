@@ -33,4 +33,12 @@ public class Ovni {
         Integer randomInt = rand.nextInt(2); // Generates either 0 or 1
         return (randomInt == 0 ? -1 : 1);
     }
+
+    public Integer getPosx() {
+        return posx;
+    }
+
+    public Integer getPosy() {
+        return posy;
+    }
 }

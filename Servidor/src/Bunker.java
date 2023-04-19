@@ -21,5 +21,9 @@ class Bunker {
         return health;
     }
 
+    public void gotHit(){
+        this.health -= 10;
+    }
+
 
 }

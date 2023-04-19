@@ -27,7 +27,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 void LoadMyImage(void);
 void convertStringToVariables(char str[]);
 
-HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid, hBitmap, hBitmapDisparoJugador, hBitmapDisparoAlien;
+HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid, hBitmap, hBitmapDisparoJugador, hBitmapDisparoAlien, hBitmapBunker100, hBitmapBunker75, hBitmapBunker50;
 
 int vidas = 2;
 int puntaje = 0;
@@ -39,6 +39,14 @@ typedef struct {
     HBITMAP imagen;
 } Coord;
 Coord coords[60];
+
+typedef struct {
+    int x;
+    int y;
+    int health;
+    HBITMAP imagen;
+} BunkerCoord;
+BunkerCoord Bcoords[4];
 
 typedef struct {
     int x;

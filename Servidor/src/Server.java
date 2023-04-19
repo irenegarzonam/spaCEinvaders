@@ -50,10 +50,20 @@ public class Server {
         out.println(message);
     }
 
-    public String receiveFromClient() throws IOException {
-        String inputLine = in.readLine();
-        System.out.println("Message received from client: " + inputLine);
-        return inputLine;
+    public boolean isClientConnected() {
+        System.out.println("Probando cliente");
+        return clientSocket != null && clientSocket.isConnected();
+    }
+
+    public String receiveMessage() {
+        try {
+            String message = in.readLine();
+            System.out.println("Received message from client: " + message);
+            return message;
+        } catch (IOException e) {
+            //System.out.println("Error receiving message: " + e.getMessage());
+            return null;
+        }
     }
 
     public static void main(String[] args) {
@@ -61,9 +71,9 @@ public class Server {
         server.start(12345);
         Game game = new Game(server);
         game.updateGame();
-        while (game.activeGame) {
+        while (game.activeGame && server.isClientConnected()) {
             try {
-                Thread.sleep(1);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

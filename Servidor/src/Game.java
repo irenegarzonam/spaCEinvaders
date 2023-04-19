@@ -53,8 +53,8 @@ public class Game implements Observer {
             try {
                 Thread.sleep(1000); // waits for 1 second
             } catch (InterruptedException e) {
-                // handle the exception if needed
             }
+            //String clientAnswer = this.server.receiveMessage();
             this.server.sendToClient(generateFinalString());
         }
     }
@@ -63,14 +63,44 @@ public class Game implements Observer {
         this.reachedRightCorner = !this.reachedRightCorner;
     }
 
-    public void createAliens(Integer numRows, Integer numCols, Integer x, Integer y, Integer speed) {
+    void getAlienCoords(String message){
+        String[] parts = message.split("_");
+        String type = parts[0];
+        if(type == "calamar"){
+            this.score += 10;
+        }else if(type == "pulpo"){
+            this.score += 40;
+        }else if(type == "cangrejo"){
+            this.score += 20;
+        }
+        String[] nums = parts[1].split(",");
+        int x = Integer.parseInt(nums[0]);
+        int y = Integer.parseInt(nums[1]);
+        List<Integer> alienCoords = findPosAlien(x,y);
+        deleteAlien(alienCoords.get(0), alienCoords.get(1));
+    }
+
+    public void createAliens(Integer numRows, Integer numCols, Integer x, Integer y, Integer speed){
         for (Integer i = 0; i < numRows; i++) {
             for (Integer j = 0; j < numCols; j++) {
                 this.aliens[i][j] = new Alien(this, x + j * 80, y + i * 80, speed);
                 this.aliens[i][j].addObserver(this);
             }
         }
-        //generateAliensMatrix();
+    }
+
+    public List<Integer> findPosAlien(Integer xPos, Integer yPos) {
+        List<Integer> intList = new ArrayList<>();
+        for (Integer i = 0; i < aliens.length; i++) {
+            for (Integer j = 0; j < aliens[0].length; j++) {
+                if(this.aliens[i][j].getPosX() == xPos && this.aliens[i][j].getPosY() == yPos){
+                    intList.add(i);
+                    intList.add(j);
+                    return intList;
+                }
+            }
+        }
+        return intList;
     }
 
     public void deleteAlien(Integer Row, Integer Column) {
@@ -80,7 +110,7 @@ public class Game implements Observer {
 
     public void createBunkers() {
         for (Integer i = 1; i <= 4; i++) {
-            Bunker newBunker = new Bunker((1250 / 4) * i - 75, 500);
+            Bunker newBunker = new Bunker((1100 / 4) * i - 75, 500);
             bunkers.add(newBunker);
         }
     }
@@ -152,24 +182,29 @@ public class Game implements Observer {
 
     String generateBunkersMatrix() {
         String Bunkers = "[";
-        int n = 0;
+        //int n = 0;
         for (Integer i = 0; i < bunkers.size(); i++) {
             Integer x = bunkers.get(i).getPosX();
             Integer y = bunkers.get(i).getPosY();
             Integer health = bunkers.get(i).getHealth();
             String add = "[" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(health) + "],";
             Bunkers += add;
-            n = i;
+            //n = i;
         }
         Bunkers += "]";
-        System.out.println(Bunkers);
+        //System.out.println(Bunkers);
         return Bunkers;
+    }
+
+    String generateOvniString() {
+        String Ovni = "[" + this.ovni.getPosx() + "," + this.ovni.getPosy() + "]";
+        return Ovni;
     }
 
     String generateFinalString() {
         String Score = Integer.toString(this.score);
         String Lives = Integer.toString(this.lives);
-        String FinalString = Score + "_" + Lives + "_" + generateBunkersMatrix() + "_" + generateAliensMatrix();
+        String FinalString = Score + "_" + Lives + "_" + generateBunkersMatrix() + "_" + generateAliensMatrix()+"_"+generateOvniString();
         //System.out.println();
         //System.out.print(FinalString);
         //System.out.println();
