@@ -2,12 +2,15 @@ import java.net.*;
 import java.io.*;
 
 public class Server {
+    private static Game game1;
+    private static Game game2;
     private ServerSocket serverSocket;
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
     private boolean inicio1 = false;
     private boolean inicio2 = false;
+    private String datos;
 
     public void start(int port) {
         try {
@@ -45,41 +48,48 @@ public class Server {
                 System.out.println("Cliente conectado desde " + clientSocket.getInetAddress().getHostName());
 
                 // Crea los streams de entrada y salida para comunicarse con el cliente
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                BufferedInputStream inputStream = new BufferedInputStream(clientSocket.getInputStream());
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
                 // Maneja los mensajes del cliente
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    // Si el mensaje es de tipo "A" (enviado desde el primer cliente)
-                    if (inputLine.startsWith("A:")) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    String input = new String(buffer, 0, bytesRead);
+                    // Si el mensaje es de tipo "A" Enviado solamente por Jugador1 o Espectador1
+                    if (input.startsWith("A:")) {
+                        //Verifica si ya hay alguien jugando
                         if(inicio1 == false){
                             inicio1 = true;
-                            Game game = new Game(serverSocket);
-                            game.updateGame();
+                            game1 = new Game(serverSocket);
+                            datos = game1.updateGame();
                             Thread.sleep(100);
                         }
-                        String[] parts = inputLine.split(":");
+                        String[] parts = input.split(":"); //AQUI DIVIDE LO QUE RECIBE EL SERVER EN DIFERENTES STRINGS
+                        datos = game1.updateGame();
 
                         // Maneja el mensaje de tipo "A"
-                        System.out.println("Mensaje recibido del cliente 1: " + inputLine);
+                        System.out.println("Mensaje recibido del cliente 1: " + datos);
                         // Envia una respuesta al cliente
-                        out.println("Respuesta al mensaje de tipo A: " + parts[2]);
+                        out.println(datos);
                     }
-                    // Si el mensaje es de tipo "B" (enviado desde el segundo cliente)
-                    else if (inputLine.startsWith("B:")) {
+                    // Si el mensaje es de tipo "B" Enviado solamente por Jugador2 o Espectador2
+                    else if (input.startsWith("B:")) {
                         if(inicio2 == false){
                             inicio2 = true;
-                            //Game game2 = new Game(serverSocket);
+                            //game2 = new Game(serverSocket);
                             //game2.updateGame();
-                            Thread.sleep(100);
                         }
+                        String[] parts = input.split(":"); //AQUI DIVIDE LO QUE RECIBE EL SERVER EN DIFERENTES STRINGS
+                        //game2.updateGame();
                         // Maneja el mensaje de tipo "B"
-                        System.out.println("Mensaje recibido del cliente 2: " + inputLine);
+
+                        System.out.println("Mensaje recibido del cliente 2: " + input);
                         // Envia una respuesta al cliente
-                        out.println("Respuesta al mensaje de tipo B");
+                        out.println("Muy bien, me sorprende, vamos crack!!!!!" + parts[0]);
+                    } else {
+                        out.println("Sea pendejo y arregle esto xdddd");
                     }
-                    out.println("Mensaje erroneao recibido, verificar estructura");
                 }
                 stop();
             } catch (IOException | InterruptedException e) {

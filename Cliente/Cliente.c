@@ -40,8 +40,8 @@ int Cliente() {
     }
 
     // Enviar datos al servidor
-    printf("Mensaje para enviar al servidor: ");
-    fgets(mensaje, 1024, stdin);
+    sprintf(mensaje, "A:%d:%d:%d:%d:%d:%d:%d:%d:%d", score, lives, Bcoords[0].health, Bcoords[1].health, Bcoords[2].health, Bcoords[3].health, 0, 0,0);
+
     bytes_enviados = send(sockfd, mensaje, strlen(mensaje), 0);
     if (bytes_enviados < 0) {
         printf("Error al enviar datos al servidor: %d", WSAGetLastError());
@@ -55,7 +55,8 @@ int Cliente() {
         return 1;
     }
     respuesta[bytes_recibidos] = '\0';
-    printf("Respuesta recibida del servidor: %s", respuesta);
+    convertStringToVariables(respuesta);
+    printf("Respuesta recibida del servidor: %s \n", respuesta);
 
     // Cerrar el socket y liberar recursos
     closesocket(sockfd);
@@ -64,10 +65,8 @@ int Cliente() {
     return 0;
 }
 
-
-
 //TODO_ LO DE LA INTERFAZ
-/*
+
 
 // Declaración de funciones
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -107,8 +106,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             hpuntaje = CreateWindowW(L"Static", L"Puntaje: 0", WS_CHILD | WS_VISIBLE,
                                      120, 630, 100, 30, hwnd, NULL, NULL, NULL);
             LoadMyImage();
-            connectToServer();
-            receiveFromServer();
+            Cliente();
 
             // loop over each element in the matrix and add the x and y coordinates to the Coord array
             int index = 0;
@@ -176,7 +174,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             DeleteObject(hBitmapBunker75);
             DeleteObject(hBitmapBunker50);
             PostQuitMessage(0);
-            closeConnection();
             break;
 
         }
@@ -218,7 +215,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         case WM_TIMER:
         {
             // Actualizar posiciones de las imágenes con las nuevas posiciones de los aliens
-            receiveFromServer();
+            Cliente();
             int index = 0;
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 12; j++) {
@@ -276,7 +273,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                                 sprintf(respuestaServidor, "%d", coords[i].x);
                                 strcat(respuestaServidor, ",");
                                 sprintf(respuestaServidor, "%d", coords[i].y);
-                                sendToServer(respuestaServidor);
+                                Cliente();
                                 puntaje += 10; // Actualizar variable de puntaje
                                 char puntaje_texto[10];
                                 sprintf(puntaje_texto, "Puntaje: %d", puntaje);
@@ -288,7 +285,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                                 sprintf(respuestaServidor, "%d", coords[i].x);
                                 strcat(respuestaServidor, ",");
                                 sprintf(respuestaServidor, "%d", coords[i].y);
-                                sendToServer(respuestaServidor);
+                                Cliente();
                                 puntaje += 40; // Actualizar variable de puntaje
                                 char puntaje_texto[10];
                                 sprintf(puntaje_texto, "Puntaje: %d", puntaje);
@@ -300,7 +297,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                                 sprintf(respuestaServidor, "%d", coords[i].x);
                                 strcat(respuestaServidor, ",");
                                 sprintf(respuestaServidor, "%d", coords[i].y);
-                                sendToServer(respuestaServidor);
+                                Cliente();
                                 puntaje += 20; // Actualizar variable de puntaje
                                 char puntaje_texto[10];
                                 sprintf(puntaje_texto, "Puntaje: %d", puntaje);
@@ -510,4 +507,3 @@ void LoadMyImage(void) {
                                        IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 }
 
-*/

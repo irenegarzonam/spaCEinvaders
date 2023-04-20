@@ -6,15 +6,12 @@ WSADATA wsa;
 SOCKET sockfd;
 struct sockaddr_in servidor;
 char mensaje[1024], respuesta[1024];
-int bytes_enviados, bytes_recibidos;
-int connectToServer();
-int receiveFromServer();
-int sendToServer(char* message);
-int closeConnection();
-int score;
-int lives;
+int score = 0;
+int lives = 2;
 int matrixBunkers[4][3];
 int matrixAliens[5][12][2];
+void convertStringToVariables(char str[]);
+
 
 // Global variables
 WSADATA wsa;
@@ -32,7 +29,6 @@ static int y_jugador = 605;
 //Parte Interfaz
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 void LoadMyImage(void);
-void convertStringToVariables(char str[]);
 
 HBITMAP hBitmapOctopus, hBitmapCrab, hBitmapSquid, hBitmap, hBitmapDisparoJugador, hBitmapDisparoAlien, hBitmapBunker100, hBitmapBunker75, hBitmapBunker50;
 

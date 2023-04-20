@@ -25,7 +25,7 @@ public class Game implements Observer {
         createBunkers();
     }
 
-    public void updateGame() {
+    public String updateGame() {
             boolean flag = this.reachedRightCorner;
             // Actualizar la posición de los extraterrestres, los ovnis y los disparos
             // Verifica si algun alien llego al final de la pantalla
@@ -55,7 +55,7 @@ public class Game implements Observer {
             } catch (InterruptedException e) {
             }
             //String clientAnswer = this.server.receiveMessage();
-            //this.server.sendToClient(generateFinalString());
+            return generateFinalString();
         }
 
 
