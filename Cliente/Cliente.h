@@ -16,6 +16,13 @@ int lives;
 int matrixBunkers[4][3];
 int matrixAliens[5][12][2];
 
+// Global variables
+WSADATA wsa;
+SOCKET s;
+struct sockaddr_in server;
+char message[1000], server_reply[2000];
+int recv_size;
+
 static HWND nave;
 static HWND hvida;
 static HWND hpuntaje;

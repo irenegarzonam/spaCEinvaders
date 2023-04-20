@@ -1,22 +1,21 @@
 #include <stdio.h>
 #include <windows.h>
 #include <string.h>
-#include <stdlib.h>
 
 #pragma comment(lib, "ws2_32.lib") // enlazar con la librería ws2_32.lib
 
 #include "Cliente.h"
 
 //TODO_ LO DE PARTE CLIENTE
-// Global variables
-WSADATA wsa;
-SOCKET sockfd;
-struct sockaddr_in servidor;
-char mensaje[1024], respuesta[1024];
-int bytes_enviados, bytes_recibidos;
 
 // Connect to server method
-int connectToServer() {
+int Cliente() {
+    WSADATA wsa;
+    SOCKET sockfd;
+    struct sockaddr_in servidor;
+    char mensaje[1024], respuesta[1024];
+    int bytes_enviados, bytes_recibidos;
+
     // Inicializar la librería de sockets
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
         printf("Error al inicializar la libreria de sockets: %d", WSAGetLastError());
@@ -30,21 +29,25 @@ int connectToServer() {
     }
 
     // Configurar el servidor al que nos conectaremos
-    memset(&servidor, '0', sizeof(servidor));
     servidor.sin_family = AF_INET;
     servidor.sin_addr.s_addr = inet_addr("127.0.0.1"); // dirección IP del servidor
-    servidor.sin_port = htons(12345); // puerto del servidor
+    servidor.sin_port = htons(8888); // puerto del servidor
 
     // Conectar al servidor
-    if (connect(sockfd, (struct sockaddr *) &servidor, sizeof(servidor)) < 0) {
+    if (connect(sockfd, (struct sockaddr *)&servidor, sizeof(servidor)) < 0) {
         printf("Error al conectar con el servidor: %d", WSAGetLastError());
         return 1;
     }
-    return 0;
-}
 
-// Receive from server method
-int receiveFromServer() {
+    // Enviar datos al servidor
+    printf("Mensaje para enviar al servidor: ");
+    fgets(mensaje, 1024, stdin);
+    bytes_enviados = send(sockfd, mensaje, strlen(mensaje), 0);
+    if (bytes_enviados < 0) {
+        printf("Error al enviar datos al servidor: %d", WSAGetLastError());
+        return 1;
+    }
+
     // Recibir datos del servidor
     bytes_recibidos = recv(sockfd, respuesta, 1024, 0);
     if (bytes_recibidos < 0) {
@@ -53,30 +56,18 @@ int receiveFromServer() {
     }
     respuesta[bytes_recibidos] = '\0';
     printf("Respuesta recibida del servidor: %s", respuesta);
-    convertStringToVariables(respuesta);
-    return 0;
-}
 
-// Send to server method
-int sendToServer(char* message) {
-    bytes_enviados = send(sockfd, message, strlen(message), 0);
-    if (bytes_enviados < 0) {
-        printf("Error al enviar datos al servidor: %d", WSAGetLastError());
-        return 1;
-    }
-    return 0;
-}
-
-// Close connection method
-int closeConnection() {
     // Cerrar el socket y liberar recursos
     closesocket(sockfd);
     WSACleanup();
+
     return 0;
 }
 
 
+
 //TODO_ LO DE LA INTERFAZ
+/*
 
 // Declaración de funciones
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -519,3 +510,4 @@ void LoadMyImage(void) {
                                        IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 }
 
+*/

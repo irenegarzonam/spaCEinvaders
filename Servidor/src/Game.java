@@ -1,3 +1,4 @@
+import java.net.ServerSocket;
 import java.sql.SQLOutput;
 import java.util.*;
 
@@ -7,11 +8,11 @@ public class Game implements Observer {
     private Alien[][] aliens;
     private List<Bunker> bunkers;
     private Ovni ovni;
-    private Server server;
+    private ServerSocket server;
     boolean activeGame;
     boolean reachedRightCorner;
 
-    public Game(Server server) {
+    public Game(ServerSocket server) {
         score = 0;
         lives = 2;
         aliens = new Alien[5][12];
@@ -25,7 +26,6 @@ public class Game implements Observer {
     }
 
     public void updateGame() {
-        while(this.activeGame) {
             boolean flag = this.reachedRightCorner;
             // Actualizar la posición de los extraterrestres, los ovnis y los disparos
             // Verifica si algun alien llego al final de la pantalla
@@ -55,9 +55,9 @@ public class Game implements Observer {
             } catch (InterruptedException e) {
             }
             //String clientAnswer = this.server.receiveMessage();
-            this.server.sendToClient(generateFinalString());
+            //this.server.sendToClient(generateFinalString());
         }
-    }
+
 
     void setReachedRightCorner(){
         this.reachedRightCorner = !this.reachedRightCorner;
