@@ -5,10 +5,10 @@ import java.util.*;
 public class Game implements Observer {
     private Integer score;
     private Integer lives;
-    private Alien[][] aliens;
-    private List<Bunker> bunkers;
+    private final Alien[][] aliens;
+    private final List<Bunker> bunkers;
     private Ovni ovni;
-    private ServerSocket server;
+    private final ServerSocket server;
     boolean activeGame;
     boolean reachedRightCorner;
 
@@ -160,7 +160,7 @@ public class Game implements Observer {
     }
 
     String generateAliensMatrix() {
-        Integer matrix[][][] = new Integer[aliens.length][aliens[0].length][2];
+        Integer[][][] matrix = new Integer[aliens.length][aliens[0].length][2];
         System.out.println("{");
         for (int row = 0; row < aliens.length; row++) {
             System.out.println();
@@ -187,7 +187,7 @@ public class Game implements Observer {
             Integer x = bunkers.get(i).getPosX();
             Integer y = bunkers.get(i).getPosY();
             Integer health = bunkers.get(i).getHealth();
-            String add = "[" + Integer.toString(x) + "," + Integer.toString(y) + "," + Integer.toString(health) + "],";
+            String add = "[" + x + "," + y + "," + health + "],";
             Bunkers += add;
             //n = i;
         }

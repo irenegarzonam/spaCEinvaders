@@ -6,19 +6,13 @@ WSADATA wsa;
 SOCKET sockfd;
 struct sockaddr_in servidor;
 char mensaje[1024], respuesta[1024];
+int bytes_enviados, bytes_recibidos;
+
 int score = 0;
 int lives = 2;
 int matrixBunkers[4][3];
 int matrixAliens[5][12][2];
 void convertStringToVariables(char str[]);
-
-
-// Global variables
-WSADATA wsa;
-SOCKET s;
-struct sockaddr_in server;
-char message[1000], server_reply[2000];
-int recv_size;
 
 static HWND nave;
 static HWND hvida;

@@ -1,6 +1,6 @@
 class Bunker {
-    private Integer posX;
-    private Integer posY;
+    private final Integer posX;
+    private final Integer posY;
     private Integer health;
 
     public Bunker(Integer posX, Integer posY) {

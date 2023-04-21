@@ -59,7 +59,7 @@ public class Server {
                     // Si el mensaje es de tipo "A" Enviado solamente por Jugador1 o Espectador1
                     if (input.startsWith("A:")) {
                         //Verifica si ya hay alguien jugando
-                        if(inicio1 == false){
+                        if (inicio1 == false) {
                             inicio1 = true;
                             game1 = new Game(serverSocket);
                             datos = game1.updateGame();
@@ -75,13 +75,13 @@ public class Server {
                     }
                     // Si el mensaje es de tipo "B" Enviado solamente por Jugador2 o Espectador2
                     else if (input.startsWith("B:")) {
-                        if(inicio2 == false){
+                        if (inicio2 == false) {
                             inicio2 = true;
-                            //game2 = new Game(serverSocket);
-                            //game2.updateGame();
+                            game2 = new Game(serverSocket);
+                            game2.updateGame();
                         }
                         String[] parts = input.split(":"); //AQUI DIVIDE LO QUE RECIBE EL SERVER EN DIFERENTES STRINGS
-                        //game2.updateGame();
+                        game2.updateGame();
                         // Maneja el mensaje de tipo "B"
 
                         System.out.println("Mensaje recibido del cliente 2: " + input);

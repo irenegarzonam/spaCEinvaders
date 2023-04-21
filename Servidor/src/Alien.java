@@ -5,7 +5,7 @@ public class Alien extends Observable {
     private Integer posX;
     private Integer posY;
     private Integer speed;
-    private Game game;
+    private final Game game;
 
 
     public Alien(Game game, Integer posX, Integer posY, Integer speed) {
