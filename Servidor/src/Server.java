@@ -11,6 +11,7 @@ public class Server {
     private boolean inicio1 = false;
     private boolean inicio2 = false;
     private String datos;
+    private String datos2;
 
     public void start(int port) {
         try {
@@ -82,12 +83,12 @@ public class Server {
                         }
                         String[] parts = input.split(":"); //AQUI DIVIDE LO QUE RECIBE EL SERVER EN DIFERENTES STRINGS
                         game2.manageReceivedData(parts);
-                        game2.updateGame();
+                        datos2 = game2.updateGame();
                         // Maneja el mensaje de tipo "B"
 
-                        System.out.println("Mensaje recibido del cliente 2: " + input);
+                        System.out.println("Mensaje recibido del cliente 2: " + datos2);
                         // Envia una respuesta al cliente
-                        out.println("Muy bien, me sorprende, vamos crack!!!!!" + parts[0]);
+                        out.println(datos2);
                     } else {
                         out.println("Sea pendejo y arregle esto xdddd");
                     }

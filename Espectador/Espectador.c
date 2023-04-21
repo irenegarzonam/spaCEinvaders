@@ -8,7 +8,11 @@
 
 //TODO_ LO DE PARTE CLIENTE
 
-// Connect to server method
+/**
+ * @brief Ejecución del servidor
+ *
+ * @return valores de salida en caso de error
+ */
 int Cliente() {
     // Inicializar la librería de sockets
     if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0) {
@@ -66,6 +70,14 @@ int Cliente() {
 // Declaración de funciones
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+/**
+ * @brief Función principal que llama la ventana
+ * @param hInstance
+ * @param hPrevInstance
+ * @param lpCmdLine
+ * @param nCmdShow
+ * @return callback de la función
+ */
 //Código para definir y crear la ventana, y solo la ventana, tipo base
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
     MSG msg;
@@ -91,6 +103,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     return (int) msg.wParam;
 }
 
+/**
+ * @brief Lógica de la ventana
+ * @param hwnd
+ * @param msg
+ * @param wParam
+ * @param lParam
+ * @return ventana
+ */
 //Aquí sucede toda la lógica
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
@@ -227,6 +247,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
+/**
+ * @brief convierte en caracteres el string recibido por el servidor
+ * @param str
+ */
 void convertStringToVariables(char str[]) {
     char *token = strtok(str, "_");  // Separamos la cadena en la primera subcadena
 
@@ -406,6 +430,9 @@ void convertStringToVariables(char str[]) {
 
 }
 
+/**
+ * @brief carga previamente las imagenes necesarias por la interfaz
+ */
 //AUX que tiene dirección de imagenes, tiene que cambiarlo en su PC porque son direcciones desde el disco, no desde root, es un error que hay que escribir en docu externa
 void LoadMyImage(void) {
 
