@@ -153,7 +153,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
 
             // Crear temporizador que actualiza las posiciones de las imágenes cada 500ms
-            SetTimer(hwnd, 1, 0.0000001, NULL);
+            SetTimer(hwnd, 1, 1000, NULL);
             break;
         }
 

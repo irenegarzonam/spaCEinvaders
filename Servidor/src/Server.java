@@ -63,7 +63,6 @@ public class Server {
                             inicio1 = true;
                             game1 = new Game(serverSocket);
                             datos = game1.updateGame();
-                            Thread.sleep(100);
                         }
                         String[] parts = input.split(":");//AQUI DIVIDE LO QUE RECIBE EL SERVER EN DIFERENTES STRINGS
                         game1.manageReceivedData(parts);
@@ -94,7 +93,7 @@ public class Server {
                     }
                 }
                 stop();
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException e) {
                 System.out.println("Error al manejar la conexion con el cliente: " + e.getMessage());
             }
         }

@@ -1,0 +1,13 @@
+# ninja log v5
+134	361	7037547438007752	Espectador.exe	65443ecf25004963
+0	129	7037547028728040	CMakeFiles/Espectador.dir/main.c.obj	7c36765569e045b8
+1	263	7037548642220082	build.ninja	fe1e9ee7483ba489
+2	1253	7037547908044940	CMakeFiles/Espectador.dir/Espectador.c.obj	a8edb7c66f7fc3ae
+4	1312	7037548754766783	CMakeFiles/Espectador.dir/Espectador.c.obj	7ac82ff2ab317ae7
+1313	1526	7037548756767129	Espectador.exe	757ba57eeb72dee6
+4	1243	7037558246626973	CMakeFiles/Espectador.dir/Espectador.c.obj	7ac82ff2ab317ae7
+1244	1474	7037558248702329	Espectador.exe	757ba57eeb72dee6
+3	1201	7037560416167123	CMakeFiles/Espectador.dir/Espectador.c.obj	7ac82ff2ab317ae7
+1211	1429	7037560418307500	Espectador.exe	757ba57eeb72dee6
+4	1273	7037564031678783	CMakeFiles/Espectador.dir/Espectador.c.obj	7ac82ff2ab317ae7
+1274	1498	7037564033719143	Espectador.exe	757ba57eeb72dee6

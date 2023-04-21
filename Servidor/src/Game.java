@@ -64,11 +64,7 @@ public class Game implements Observer {
                 }
             }
             verifyWin();
-            try {
-                Thread.sleep(1000); // waits for 1 second
-            } catch (InterruptedException e) {
-            }
-            return generateFinalString();
+        return generateFinalString();
         }
 
     /**

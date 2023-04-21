@@ -1,0 +1,3 @@
+C:/Users/DylanG/Documents/1.UNIVERSIDAD/1. Semestres/5to. Semestre/1. Compi/Tarea Paradigma Imperativo OOP/spaCEinvaders/Espectador/cmake-build-debug/CMakeFiles/Espectador.dir
+C:/Users/DylanG/Documents/1.UNIVERSIDAD/1. Semestres/5to. Semestre/1. Compi/Tarea Paradigma Imperativo OOP/spaCEinvaders/Espectador/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/DylanG/Documents/1.UNIVERSIDAD/1. Semestres/5to. Semestre/1. Compi/Tarea Paradigma Imperativo OOP/spaCEinvaders/Espectador/cmake-build-debug/CMakeFiles/rebuild_cache.dir
