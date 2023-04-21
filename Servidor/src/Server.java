@@ -65,7 +65,8 @@ public class Server {
                             datos = game1.updateGame();
                             Thread.sleep(100);
                         }
-                        String[] parts = input.split(":"); //AQUI DIVIDE LO QUE RECIBE EL SERVER EN DIFERENTES STRINGS
+                        String[] parts = input.split(":");//AQUI DIVIDE LO QUE RECIBE EL SERVER EN DIFERENTES STRINGS
+                        game1.manageReceivedData(parts);
                         datos = game1.updateGame();
 
                         // Maneja el mensaje de tipo "A"
@@ -81,6 +82,7 @@ public class Server {
                             game2.updateGame();
                         }
                         String[] parts = input.split(":"); //AQUI DIVIDE LO QUE RECIBE EL SERVER EN DIFERENTES STRINGS
+                        game2.manageReceivedData(parts);
                         game2.updateGame();
                         // Maneja el mensaje de tipo "B"
 

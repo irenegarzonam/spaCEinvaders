@@ -22,12 +22,10 @@
   <component name="ChangeListManager">
     <list default="true" id="6e1dc09f-50e1-4117-9b93-c672a7d6baae" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/Cliente.c" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/Cliente.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/Cliente.h" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/Cliente.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cache-v2-0ceefd1c66375602dd91.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-18f3ee595d3e9cb00f99.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-5ea39248e3050db932b8.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-5072c94052a08a927490.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/index-2023-04-18T01-45-14-0007.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/index-2023-04-20T16-17-41-0606.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/target-Cliente-Debug-e5ff86143612c1e632ab.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/toolchains-v1-98deb88f10a077c59947.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeCache.txt" afterDir="false" />
@@ -114,9 +112,9 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="Cliente" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="Cliente" TARGET_NAME="Cliente" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Cliente" RUN_TARGET_NAME="Cliente">
@@ -135,7 +133,7 @@
       <updated>1681580761662</updated>
       <workItem from="1681580764138" duration="544000" />
       <workItem from="1681754426967" duration="3186000" />
-      <workItem from="1681855481589" duration="9284000" />
+      <workItem from="1681855481589" duration="18744000" />
     </task>
     <servers />
   </component>

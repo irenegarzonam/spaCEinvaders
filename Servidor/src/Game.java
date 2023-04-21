@@ -2,6 +2,9 @@ import java.net.ServerSocket;
 import java.sql.SQLOutput;
 import java.util.*;
 
+/**
+ * Clase juego, es la que maneja toda la logica y funcionamiento del juego
+ */
 public class Game implements Observer {
     private Integer score;
     private Integer lives;
@@ -11,7 +14,14 @@ public class Game implements Observer {
     private final ServerSocket server;
     boolean activeGame;
     boolean reachedRightCorner;
+    private String xPlayer;
+    private String xBullet;
+    private String yBullet;
 
+    /**
+     * Metodo constructor de la clase juego, inicializa todas los atributos del juego
+     * @param server recibe el servidor por el cuel envia y recibe informacion
+     */
     public Game(ServerSocket server) {
         score = 0;
         lives = 2;
@@ -25,6 +35,10 @@ public class Game implements Observer {
         createBunkers();
     }
 
+    /**
+     * Actualiza todas las posiciones de los aliens y envia constantemente la informacion necesaria al cliente
+     * @return el String que se debe enviar al cliente
+     */
     public String updateGame() {
             boolean flag = this.reachedRightCorner;
             // Actualizar la posición de los extraterrestres, los ovnis y los disparos
@@ -42,7 +56,7 @@ public class Game implements Observer {
                         }
                     }
                 }
-                if (!this.ovni.exists && getRandomNumber() % 5 == 0) {
+                if (getRandomNumber() % 7 == 0) {
                     createOvni();
                 }
                 if (this.ovni.exists) {
@@ -54,32 +68,24 @@ public class Game implements Observer {
                 Thread.sleep(1000); // waits for 1 second
             } catch (InterruptedException e) {
             }
-            //String clientAnswer = this.server.receiveMessage();
             return generateFinalString();
         }
 
-
+    /**
+     * cambia el valor del booleano por su contrario
+     */
     void setReachedRightCorner(){
         this.reachedRightCorner = !this.reachedRightCorner;
     }
 
-    void getAlienCoords(String message){
-        String[] parts = message.split("_");
-        String type = parts[0];
-        if(type == "calamar"){
-            this.score += 10;
-        }else if(type == "pulpo"){
-            this.score += 40;
-        }else if(type == "cangrejo"){
-            this.score += 20;
-        }
-        String[] nums = parts[1].split(",");
-        int x = Integer.parseInt(nums[0]);
-        int y = Integer.parseInt(nums[1]);
-        List<Integer> alienCoords = findPosAlien(x,y);
-        deleteAlien(alienCoords.get(0), alienCoords.get(1));
-    }
-
+    /**
+     * crea la matriz de aliens
+     * @param numRows numero de filas de la matriz
+     * @param numCols numero de columnas de la matriz
+     * @param x posicion en x donde va a empezar la matrix
+     * @param y posicion en y donde empieza la matriz
+     * @param speed velocidad de los aliens
+     */
     public void createAliens(Integer numRows, Integer numCols, Integer x, Integer y, Integer speed){
         for (Integer i = 0; i < numRows; i++) {
             for (Integer j = 0; j < numCols; j++) {
@@ -89,11 +95,17 @@ public class Game implements Observer {
         }
     }
 
-    public List<Integer> findPosAlien(Integer xPos, Integer yPos) {
+    /**
+     * Encuentra en que posicion de la matriz esta un alien a partir de sus coordenadas
+     * @param xCoords coordenadas en x del alien
+     * @param yCoords coordenadas en y del alien
+     * @return lista con las posiciones x y y del alien
+     */
+    public List<Integer> findPosInMatrixAlien(Integer xCoords, Integer yCoords) {
         List<Integer> intList = new ArrayList<>();
         for (Integer i = 0; i < aliens.length; i++) {
             for (Integer j = 0; j < aliens[0].length; j++) {
-                if(this.aliens[i][j].getPosX() == xPos && this.aliens[i][j].getPosY() == yPos){
+                if(this.aliens[i][j].getPosX() == xCoords && this.aliens[i][j].getPosY() == yCoords){
                     intList.add(i);
                     intList.add(j);
                     return intList;
@@ -103,11 +115,29 @@ public class Game implements Observer {
         return intList;
     }
 
+    /**
+     * Saca de la pantalla el alien eliminado
+     * @param Row Fila de la matriz en la que se encuentra el alien
+     * @param Column columna de la matriz en la que esta el alien
+     */
     public void deleteAlien(Integer Row, Integer Column) {
-        aliens[Row][Column].deleteObserver(this);
-        aliens[Row][Column] = null;
+        aliens[Row][Column].setPosY(aliens[Row][Column].getPosY() + 1000);
     }
 
+    /**
+     * Retorna un alien "eliminado" a su posicion original
+     * @param Row fila de la matriz en la que estaba el alien
+     * @param Column columna de la matriz donde esta el alien
+     */
+    public void bringBackAlien(Integer Row, Integer Column) {
+        if(aliens[Row][Column].getPosY() > 1000){
+            aliens[Row][Column].setPosY(aliens[Row][Column].getPosY() - 1000);
+        }
+    }
+
+    /**
+     * Crea la lista de bunkers
+     */
     public void createBunkers() {
         for (Integer i = 1; i <= 4; i++) {
             Bunker newBunker = new Bunker((1100 / 4) * i - 75, 500);
@@ -115,10 +145,21 @@ public class Game implements Observer {
         }
     }
 
+    /**
+     * En caso de no haber un ovni, crea uno
+     */
     public void createOvni(){
-        this.ovni = new Ovni(8);
+        if(!this.ovni.exists){
+            this.ovni = new Ovni(8);
+        }
     }
 
+    /**
+     * Se encarga de mantener actualizado a los observers de todos los aliens
+     * @param o     the observable object.
+     * @param arg   an argument passed to the {@code notifyObservers}
+     *                 method.
+     */
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof String && arg.equals("move")) {
@@ -126,6 +167,9 @@ public class Game implements Observer {
         }
     }
 
+    /**
+     * actualiza la velocidad y posicion de todos los aliens en caso de que alguno cambie
+     */
     private void updateSpeed() {
         for (int row = 0; row < aliens.length; row++) {
             for (int col = 0; col < aliens[0].length; col++) {
@@ -136,17 +180,24 @@ public class Game implements Observer {
         }
     }
 
+    /**
+     * Genera un numero random entre 1 y 26
+     * @return numero random generado
+     */
     public static Integer getRandomNumber() {
         Random rand = new Random();
-        Integer randomInt = rand.nextInt(25) + 1; // Generates a random number between 1 and 25
+        Integer randomInt = rand.nextInt(26) + 1; // Generates a random number between 1 and 25
         return randomInt;
     }
 
+    /**
+     * Verifica si la matriz de aliens esta vacia
+     */
     public void verifyWin() {
         boolean win = true;
         for (Integer i = 0; i < aliens.length; i++) {
             for (Integer j = 0; j < aliens[0].length; j++) {
-                if (aliens[i][j] != null) {
+                if (aliens[i][j].getPosY() < 1000) {
                     win = false;
                     break;
                 }
@@ -155,59 +206,102 @@ public class Game implements Observer {
         if (win) {
             this.lives += 1;
             this.score += 100;
-            //this.activeGame = false;
         }
     }
 
+    /**
+     * Convierte la matriz de aliens en un String para enviarle al cliente
+     * @return String de la matriz
+     */
     String generateAliensMatrix() {
         Integer[][][] matrix = new Integer[aliens.length][aliens[0].length][2];
-        System.out.println("{");
         for (int row = 0; row < aliens.length; row++) {
-            System.out.println();
             for (int col = 0; col < aliens[0].length; col++) {
                 if(aliens[row][col] != null) {
                     matrix[row][col][0] = this.aliens[row][col].getPosX();
                     matrix[row][col][1] = this.aliens[row][col].getPosY();
-                    System.out.print("{" + matrix[row][col][0] + "," + matrix[row][col][1] + "}");
                 }else{
                     break;
                 }
             }
         }
-        System.out.println("}");
         String matrixAsString = Arrays.deepToString(matrix);
-        System.out.println(matrixAsString);
         return matrixAsString;
     }
 
+    /**
+     * Convierte la lista de bunkers en un string para enviar al cliente
+     * @return String a enviar
+     */
     String generateBunkersMatrix() {
         String Bunkers = "[";
-        //int n = 0;
         for (Integer i = 0; i < bunkers.size(); i++) {
             Integer x = bunkers.get(i).getPosX();
             Integer y = bunkers.get(i).getPosY();
             Integer health = bunkers.get(i).getHealth();
             String add = "[" + x + "," + y + "," + health + "],";
             Bunkers += add;
-            //n = i;
         }
         Bunkers += "]";
         //System.out.println(Bunkers);
         return Bunkers;
     }
 
+    /**
+     * Convierte las posiciones del ovni en una lista string para enviar al cliente
+     * @return String a enviar
+     */
     String generateOvniString() {
         String Ovni = "[" + this.ovni.getPosx() + "," + this.ovni.getPosy() + "]";
         return Ovni;
     }
 
+    /**
+     * Concatena todos los String necesarios para pasarle al cliente
+     * @return String con todos los datos
+     */
     String generateFinalString() {
         String Score = Integer.toString(this.score);
         String Lives = Integer.toString(this.lives);
-        String FinalString = Score + "_" + Lives + "_" + generateBunkersMatrix() + "_" + generateAliensMatrix()+"_"+generateOvniString();
-        //System.out.println();
-        //System.out.print(FinalString);
-        //System.out.println();
+        String FinalString = Score + "_" + Lives + "_" + generateBunkersMatrix() + "_" + generateAliensMatrix()+"_"+generateOvniString()+
+                "_" + this.xPlayer + "_" + this.xBullet + "_" + this.yBullet;
         return FinalString;
+    }
+
+    /**
+     * Maneja los datos del alien con el que la bala tuvo colision
+     * @param coordX coordenada en x del alien
+     * @param coordY coordenada en y del alien
+     * @param type tipo de alien
+     */
+    void manageAlienHit(Integer coordX, Integer coordY, Integer type){
+        List<Integer> matrixPos= findPosInMatrixAlien(coordX, coordY);
+        if(type == 1){
+            this.score += 10;
+        }else if(type == 2){
+            this.score += 20;
+        }else if(type == 3){
+            this.score += 40;
+        }
+        if(coordX != 0 || coordY != 0) {
+            deleteAlien(matrixPos.get(0), matrixPos.get(1));
+        }
+    }
+
+    /**
+     * Administra todo la informacion recibida por el cliente
+     * @param data String con datos recibidos
+     */
+    void manageReceivedData(String[] data){
+        Integer xCoord = Integer.parseInt(data[1]);
+        Integer yCoord = Integer.parseInt(data[2]);
+        Integer alienType = Integer.parseInt(data[3]);
+        manageAlienHit(xCoord, yCoord, alienType);
+
+        Integer hitBunker = Integer.parseInt(data[4]); //-1;
+        this.bunkers.get(hitBunker).gotHit();
+        this.xPlayer = data[5];
+        this.xBullet = data[6];
+        this.yBullet = data[7];
     }
 }
