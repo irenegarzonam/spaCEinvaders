@@ -22,14 +22,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6e1dc09f-50e1-4117-9b93-c672a7d6baae" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/Cliente.c" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/Cliente.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-63903367d1b6e37ab0a0.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/.cmake/api/v1/reply/index-2023-04-21T00-41-58-0661.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/Cliente.dir/Cliente.c.obj" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/Cliente.dir/Cliente.c.obj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/Cliente.dir/objects.a" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/Cliente.dir/objects.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cliente/cmake-build-debug/Cliente.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Cliente/cmake-build-debug/Cliente.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Servidor/src/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/Servidor/src/Game.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +95,7 @@
       <updated>1681580761662</updated>
       <workItem from="1681580764138" duration="544000" />
       <workItem from="1681754426967" duration="3186000" />
-      <workItem from="1681855481589" duration="20788000" />
+      <workItem from="1681855481589" duration="22727000" />
     </task>
     <servers />
   </component>
