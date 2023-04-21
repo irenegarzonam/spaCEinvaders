@@ -29,7 +29,7 @@ public class Ovni {
      * Metodo constructor sin paramentros
      */
     public Ovni() {
-        this.exists = true;
+        this.exists = false;
     }
 
     /**

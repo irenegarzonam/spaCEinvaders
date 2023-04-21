@@ -252,7 +252,12 @@ public class Game implements Observer {
      * @return String a enviar
      */
     String generateOvniString() {
-        String Ovni = "[" + this.ovni.getPosx() + "," + this.ovni.getPosy() + "]";
+        String Ovni;
+        if(this.ovni.exists) {
+            Ovni = "[" + this.ovni.getPosx() + "," + this.ovni.getPosy() + "]";
+        }else{
+            Ovni = "[9000,9000]";
+        }
         return Ovni;
     }
 
