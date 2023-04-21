@@ -134,13 +134,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 Bcoords[i].health = matrixBunkers[i][2];
                 HWND hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
                                           Bcoords[i].x, Bcoords[i].y, 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
-                if (Bcoords->health == 100) {
+                if (Bcoords[i].health == 100) {
                     Bcoords[i].imagen = hBitmapBunker100;
                     SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
-                } else if (Bcoords->health < 100 && Bcoords->health >= 50) {
+                } else if (Bcoords[i].health < 100 && Bcoords->health >= 50) {
                     Bcoords[i].imagen = hBitmapBunker75;
                     SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
-                } else if (Bcoords->health < 50 && Bcoords->health > 0) {
+                } else if (Bcoords[i].health < 50 && Bcoords->health > 0) {
                     Bcoords[i].imagen = hBitmapBunker50;
                     SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
                 } else {
@@ -227,13 +227,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 Bcoords[i].health = matrixBunkers[i][2];
                 HWND hsti = CreateWindowW(L"Static", L"", WS_CHILD | WS_VISIBLE | SS_BITMAP,
                                           Bcoords[i].x, Bcoords[i].y, 50, 50, hwnd, (HMENU) (i + 1), NULL, NULL);
-                if (Bcoords->health == 100) {
+                if (Bcoords[i].health == 100) {
                     Bcoords[i].imagen = hBitmapBunker100;
                     SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
-                } else if (Bcoords->health < 100 && Bcoords->health >= 50) {
+                } else if (Bcoords[i].health < 100 && Bcoords->health >= 50) {
                     Bcoords[i].imagen = hBitmapBunker75;
                     SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
-                } else if (Bcoords->health < 50) {
+                } else if (Bcoords[i].health < 50) {
                     Bcoords[i].imagen = hBitmapBunker50;
                     SendMessage(hsti, STM_SETIMAGE, (WPARAM) IMAGE_BITMAP, (LPARAM) Bcoords[i].imagen);
                 }
